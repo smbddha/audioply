@@ -6,6 +6,8 @@ import { useState, useCallback } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const Graph = {};
+
 export default function Home() {
   const [audioCtx, _] = useState<AudioContext | null>(
     typeof window !== "undefined" ? new AudioContext() : null
@@ -24,6 +26,8 @@ export default function Home() {
 
       oscNode.connect(gainNode).connect(audioCtx.destination);
       oscNode.start();
+
+      console.log(gainNode, oscNode);
     }
   }, [audioCtx]);
 
