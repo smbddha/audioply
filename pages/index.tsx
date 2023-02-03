@@ -9,8 +9,22 @@ const inter = Inter({ subsets: ["latin"] });
 
 const Graph = {};
 
-const Node = () => {
-  return <></>;
+type NodeProps = {
+  name: string;
+};
+
+const Node = ({ name }: NodeProps) => {
+  return (
+    <Draggable handle=".handle">
+      <div>
+        <div
+          className="handle"
+          style={{ width: "20px", height: "10px", backgroundColor: "blue" }}
+        ></div>
+        <div>{name}</div>
+      </div>
+    </Draggable>
+  );
 };
 
 type INode = {
@@ -32,6 +46,8 @@ export default function Home() {
   const handleClick = () => {
     addNode();
   };
+
+  const handleAddNode = () => {};
 
   const addNode = useCallback(() => {
     if (audioCtx) {
@@ -55,11 +71,13 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
+        <button onClick={handleAddNode}>Add Node</button>
         <Draggable>
           <div>
             <button onClick={handleClick}>DO IT</button>
           </div>
         </Draggable>
+        <Node name="test" />
       </main>
     </>
   );
