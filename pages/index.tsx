@@ -3,10 +3,15 @@ import Image from "next/image";
 import { Inter } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
 import { useState, useCallback } from "react";
+// import { useSvgDrawing } from "@svg-drawing/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 const Graph = {};
+
+const Node = () => {
+  return <></>;
+};
 
 export default function Home() {
   const [audioCtx, _] = useState<AudioContext | null>(
