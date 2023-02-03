@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Image from "next/image";
 import { Inter } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
 import { useState, useCallback } from "react";
@@ -12,6 +11,16 @@ const Graph = {};
 const Node = () => {
   return <></>;
 };
+
+type INode = {
+  name: String;
+  node: AudioNode;
+  settings: object;
+  inputs: INode[];
+  outputs: INode[];
+};
+
+const connections: [INode, INode][] = [];
 
 export default function Home() {
   const [audioCtx, _] = useState<AudioContext | null>(
