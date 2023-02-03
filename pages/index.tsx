@@ -3,10 +3,15 @@ import { Inter } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
 import { useState, useCallback } from "react";
 import Draggable from "react-draggable";
+// import { useSvgDrawing } from "@svg-drawing/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 const Graph = {};
+
+const Node = () => {
+  return <></>;
+};
 
 type INode = {
   name: String;
