@@ -1,7 +1,6 @@
 import Head from "next/head";
 // import { Inter } from "@next/font/google";
-import styles from "@/styles/Home.module.css";
-import react, {
+import {
   useState,
   useCallback,
   MouseEvent,
@@ -16,145 +15,33 @@ import Draggable from "react-draggable";
 import React from "react";
 // import { useSvgDrawing } from "@svg-drawing/react";
 
+import styles from "@/styles/Home.module.css";
+import Dropdown from "@/components/dropdown";
+import Node from "@/components/node";
+
 // const inter = Inter({ subsets: ["latin"] });
 
 const Graph = [];
-
-type NodeProps = {
-  node: INode;
-  inputMouseHandler: (
-    e: MouseEvent,
-    node: INode,
-    i: number,
-    ref: RefObject<HTMLDivElement>
-  ) => void;
-  outputMouseHandler: (
-    e: MouseEvent,
-    node: INode,
-    i: number,
-    ref: RefObject<HTMLDivElement>
-  ) => void;
-};
-
-type INode = {
-  name: String;
-  node: AudioNode;
-  settings: object;
-  inputs: RefObject<HTMLDivElement>[];
-  outputs: RefObject<HTMLDivElement>[];
-  // params: NodeParam[];
-};
-
-enum NodeParamEnum {
-  Input = "INPUT",
-  Output = "OUTPUT",
-}
-
-type NodeParam = {
-  type: NodeParamEnum;
-  idx: number;
-  name: string;
-};
-
-type InputOutputProps = {
-  // ref: RefObject<HTMLDivElement | undefined>;
-  mouseHandler: (e: MouseEvent) => void;
-};
-
-type ConnNodeTuple = [INode, number, number];
-
-const InputOutputNode = React.forwardRef<HTMLDivElement, InputOutputProps>(
-  (props, ref) => {
-    // const iref = useRef<HTMLDivElement>(ref);
-    const { mouseHandler } = props;
-
-    return (
-      <div
-        ref={ref}
-        onMouseDown={(e) => mouseHandler(e)}
-        onMouseEnter={(e) => mouseHandler(e)}
-        onMouseLeave={(e) => mouseHandler(e)}
-        style={{
-          backgroundColor: "green",
-          width: "8px",
-          height: "8px",
-        }}
-      ></div>
-    );
-  }
-);
-
-const Node = ({ node, inputMouseHandler, outputMouseHandler }: NodeProps) => {
-  const handleOutputClick = (i: number) => {
-    return;
-  };
-
-  return (
-    <Draggable handle=".handle">
-      <div
-        style={{
-          zIndex: "1000",
-          border: "2px solid white",
-          display: "flex",
-          flexDirection: "column",
-          gap: "6px",
-          padding: "10px",
-        }}
-      >
-        <div
-          className="handle"
-          style={{
-            width: "20px",
-            height: "10px",
-            backgroundColor: "blue",
-          }}
-        ></div>
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-            flexDirection: "row",
-            gap: "8px",
-          }}
-        >
-          {node.inputs.map((ref, i) => {
-            return (
-              <InputOutputNode
-                ref={ref}
-                mouseHandler={(e) => inputMouseHandler(e, node, i, ref)}
-              />
-            );
-          })}
-        </div>
-        <div>{node.name}</div>
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-            flexDirection: "row",
-            gap: "8px",
-          }}
-        >
-          {node.outputs.map((ref, i) => {
-            return (
-              <InputOutputNode
-                ref={ref}
-                mouseHandler={(e) => outputMouseHandler(e, node, i, ref)}
-              />
-            );
-          })}
-        </div>
-      </div>
-    </Draggable>
-  );
-};
-
 const connections: [any, any][] = [];
 
 enum MouseState {
   UP = "Up",
   DOWN = "Down",
 }
+
+const nodeOptions: Record<
+  string,
+  { f: (ctx: AudioContext) => AudioNode; d: string }
+> = {
+  gainNode: {
+    f: (ctx) => ctx.createGain(),
+    d: "Gain Node",
+  },
+  oscillatorNode: {
+    f: (ctx) => ctx.createOscillator(),
+    d: "Oscillator Node",
+  },
+};
 
 export default function Home() {
   const [audioCtx, _] = useState<AudioContext | null>(
@@ -291,7 +178,7 @@ export default function Home() {
     inputIndex: number,
     ref: RefObject<HTMLDivElement>
   ) => {
-    console.log(e.type, ref.current);
+    e.preventDefault();
     if (e.type === "mousedown") {
       setConnectionStart([node, inputIndex, -1]);
     } else if (e.type === "mouseenter") {
@@ -310,7 +197,7 @@ export default function Home() {
     outputIndex: number,
     ref: RefObject<HTMLDivElement>
   ) => {
-    console.log(e.type, ref.current);
+    e.preventDefault();
     if (e.type === "mousedown") {
       setConnectionStart([node, -1, outputIndex]);
     } else if (e.type === "mouseenter") {
@@ -376,6 +263,16 @@ export default function Home() {
             );
           })}
         </svg>
+        <Dropdown title={"Add Node"}>
+          {Object.entries(nodeOptions).map(([k, v], i) => {
+            const { f, d } = v;
+            return (
+              <button key={i} onClick={() => console.log("CREATING", d)}>
+                {d}
+              </button>
+            );
+          })}
+        </Dropdown>
         <button style={{ zIndex: "1000" }} onClick={handleAddNode}>
           Add Node
         </button>
