@@ -1,7 +1,15 @@
-import { useState, useContext, forwardRef, RefObject, MouseEvent } from "react";
+import {
+  useState,
+  useContext,
+  forwardRef,
+  RefObject,
+  MouseEvent,
+  useRef,
+  ChangeEvent,
+} from "react";
 import Draggable from "react-draggable";
 
-import { INode } from "@/types";
+import { INode, ConnNodeTuple } from "@/types";
 
 type NodeProps = {
   node: INode;
@@ -35,7 +43,30 @@ type InputOutputProps = {
   mouseHandler: (e: MouseEvent) => void;
 };
 
-type ConnNodeTuple = [INode, number, number];
+const useSlider = (
+  min: number,
+  max: number,
+  defaultState: number,
+  label: string,
+  id: string
+) => {
+  const [state, setSlide] = useState(defaultState);
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log("setting level", e.target.value);
+    setSlide(e.target.valueAsNumber);
+  };
+
+  const props = {
+    type: "range",
+    id,
+    min,
+    max,
+    step: max / 1000,
+    value: state,
+    onChange: handleChange,
+  };
+  return props;
+};
 
 const InputOutputNode = forwardRef<HTMLDivElement, InputOutputProps>(
   function InputOutputNode(props, ref) {
@@ -49,36 +80,101 @@ const InputOutputNode = forwardRef<HTMLDivElement, InputOutputProps>(
         onMouseEnter={(e) => mouseHandler(e)}
         onMouseLeave={(e) => mouseHandler(e)}
         style={{
-          backgroundColor: "green",
-          width: "8px",
-          height: "8px",
+          backgroundColor: "black",
+          width: "14px",
+          height: "14px",
         }}
       ></div>
     );
   }
 );
 
-const Node = ({ node, inputMouseHandler, outputMouseHandler }: NodeProps) => {
+type NodeParamProps = {
+  name: string;
+  audioNode: AudioNode;
+  audioParam: AudioParam;
+};
+
+const NodeParam = ({ name, audioNode, audioParam }: NodeParamProps) => {
+  const sliderProps = useSlider(
+    audioParam.minValue,
+    audioParam.maxValue,
+    audioParam.defaultValue,
+    "",
+    ""
+  );
+
   return (
-    <Draggable handle=".handle">
+    <div>
       <div
         style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <text>{name}</text>
+        <label>{sliderProps.value}</label>
+      </div>
+      <div>
+        <input {...sliderProps} />
+      </div>
+    </div>
+  );
+};
+
+const Node = ({ node, inputMouseHandler, outputMouseHandler }: NodeProps) => {
+  const nodeRef = useRef(null);
+  console.log("node render", node.node);
+
+  const renderParam = (paramName: string) => {
+    const param = node.node[paramName as keyof AudioNode];
+    if (!(param instanceof AudioParam)) return;
+
+    console.log(param.value, param.minValue, param.maxValue);
+    return (
+      <NodeParam name={paramName} audioNode={node.node} audioParam={param} />
+    );
+  };
+
+  const handleParamChange = (param: AudioParam, e: InputEvent) => {
+    if (!e.target) return;
+
+    console.log(e);
+    param.setValueAtTime(
+      e.target.valueAsNumber,
+      node.node.context.currentTime + 1
+    );
+  };
+
+  return (
+    <Draggable nodeRef={nodeRef} handle=".handle">
+      <div
+        ref={nodeRef}
+        style={{
           zIndex: "1000",
-          border: "2px solid white",
+          border: "4px solid black",
           display: "flex",
           flexDirection: "column",
-          gap: "6px",
-          padding: "10px",
+          // gap: "6px",
+          backgroundColor: "white",
+          color: "black",
         }}
       >
         <div
-          className="handle"
           style={{
-            width: "20px",
-            height: "10px",
-            backgroundColor: "blue",
+            display: "flex",
+            flexDirection: "row",
           }}
-        ></div>
+        >
+          {/*<div
+            style={{
+              width: "20px",
+              height: "10px",
+              backgroundColor: "blue",
+            }}
+          ></div>*/}
+        </div>
         <div
           style={{
             display: "flex",
@@ -97,7 +193,11 @@ const Node = ({ node, inputMouseHandler, outputMouseHandler }: NodeProps) => {
             );
           })}
         </div>
-        <div>{node.name}</div>
+        <div className="handle" style={{ padding: "8px" }}>
+          {node.name}
+        </div>
+        {/* ---- params ---- */}
+        <div>{node.params ? node.params.map(renderParam) : null}</div>
         <div
           style={{
             display: "flex",

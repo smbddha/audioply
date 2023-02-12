@@ -15,7 +15,12 @@ const Dropdown = ({ title, children }: Props) => {
   return (
     <div
       className="dropdown"
-      style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+      style={{
+        zIndex: "1000",
+        display: "flex",
+        flexDirection: "column",
+        gap: "10px",
+      }}
     >
       <div>
         {title}
