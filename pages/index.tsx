@@ -11,6 +11,7 @@ import {
 } from "react";
 import React from "react";
 
+import { getRefCoords } from "@/utils";
 import styles from "@/styles/Home.module.css";
 import Dropdown from "@/components/dropdown";
 import MyAudioNode from "@/components/MyAudioNode";
@@ -19,8 +20,6 @@ import { INode, ConnNode, Point, AudioNodeType } from "@/types";
 import SVGLayer from "@/components/svglayer";
 
 const inter = Inter({ subsets: ["latin"] });
-
-const connections: [ConnNode, ConnNode][] = [];
 
 const nodeOptions: Record<
   string,
@@ -67,29 +66,6 @@ const nodeOptions: Record<
     d: "Oscillator Node",
     nodeType: AudioNodeType.Oscillator,
   },
-};
-
-const getRefCoords = (ref: RefObject<HTMLElement>): Point | null => {
-  if (!ref) return null;
-  if (!ref.current) return null;
-  const rect = ref.current.getBoundingClientRect();
-
-  return { x: rect.x, y: rect.y };
-};
-
-const getCoords = (connNode: ConnNode): Point | null => {
-  const [node, outputOrInput, idx] = connNode;
-
-  let ref;
-  if (outputOrInput === "input") {
-    ref = node.inputRefs[idx];
-  } else if (outputOrInput === "output") {
-    ref = node.outputRefs[idx];
-  }
-
-  if (!ref) return null;
-
-  return getRefCoords(ref);
 };
 
 export default function Home() {

@@ -21,22 +21,6 @@ export enum AudioNodeType {
   Analyser = "ANALYSER",
 }
 
-enum AudioControlType {}
-
-/*
-	Control node (wrapper class around audio node)
-	main issue: defining reusable controls and reusable interfaces together
-	*/
-
-interface AudioControl {
-  type: AudioControlType;
-}
-
-type OptionControl = {
-  options: string[];
-};
-
-export type ConnNodeTuple = [INode, number, number];
 export type ConnNode = [INode, OutputOrInput, number];
 
 export type OutputOrInput = "output" | "input";

@@ -1,7 +1,6 @@
 import React from "react";
 
 import ParamSlider from "@/uicomponents/paramslider";
-import Node from "@/uicomponents/node";
 import Dropdown from "../dropdown";
 
 type Props = {
