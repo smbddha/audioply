@@ -9,16 +9,18 @@ const useSlider = (
 ) => {
   const [state, setSlide] = useState(defaultState);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log("setting level", e.target.value);
     setSlide(e.target.valueAsNumber);
 
     if (onChange) onChange(e.target.valueAsNumber);
   };
 
-  const setValue = useCallback((v: number) => {
-    setSlide(v);
-    if (onChange) onChange(v);
-  }, []);
+  const setValue = useCallback(
+    (v: number) => {
+      setSlide(v);
+      if (onChange) onChange(v);
+    },
+    [onChange]
+  );
 
   const props = {
     type: "range",
@@ -75,12 +77,18 @@ const ParamSlider = (props: Props) => {
   };
 
   return (
-    <>
+    <div
+      style={{
+        margin: "0.2rem",
+        marginBottom: "0.4rem",
+      }}
+    >
       <div
         style={{
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
+          marginBottom: "0.2rem",
         }}
       >
         <span>{title}</span>
@@ -90,12 +98,19 @@ const ParamSlider = (props: Props) => {
             inputMode="numeric"
             value={textValue}
             onChange={handleInput}
+            style={{
+              maxWidth: "3rem",
+              background: "none",
+              textDecoration: "none",
+              color: "black",
+              border: "0px solid transparent",
+            }}
           />
           <span>{unit ?? unit}</span>
         </div>
       </div>
       <input {...sliderProps} />
-    </>
+    </div>
   );
 };
 

@@ -2,7 +2,6 @@ import Head from "next/head";
 import { Inter } from "@next/font/google";
 import {
   useState,
-  useCallback,
   MouseEvent,
   RefObject,
   useRef,
@@ -11,12 +10,12 @@ import {
 } from "react";
 import React from "react";
 
-import { getRefCoords } from "@/utils";
+import { getCoords } from "@/utils";
 import styles from "@/styles/Home.module.css";
 import Dropdown from "@/components/dropdown";
 import MyAudioNode from "@/components/MyAudioNode";
 
-import { INode, ConnNode, Point, AudioNodeType } from "@/types";
+import { INode, ConnNode, AudioNodeType } from "@/types";
 import SVGLayer from "@/components/svglayer";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -26,43 +25,36 @@ const nodeOptions: Record<
   {
     f: (ctx: AudioContext) => AudioNode;
     d: string;
-    params: string[];
     nodeType: AudioNodeType;
   }
 > = {
   analyserNode: {
     f: (ctx) => ctx.createAnalyser(),
-    params: [],
     d: "Analyser",
     nodeType: AudioNodeType.Analyser,
   },
   delayNode: {
     f: (ctx) => ctx.createDelay(),
-    params: ["delayTime"],
     d: "Delay",
     nodeType: AudioNodeType.Delay,
   },
   convolverNode: {
     f: (ctx) => ctx.createConvolver(),
-    params: ["delayTime"],
     d: "Convolver",
     nodeType: AudioNodeType.Convolver,
   },
   biquadFilter: {
     f: (ctx) => ctx.createBiquadFilter(),
-    params: ["Q", "detune", "frequency", "gain"],
     d: "Biquad Filter",
     nodeType: AudioNodeType.Biquad,
   },
   gainNode: {
     f: (ctx) => ctx.createGain(),
-    params: ["gain"],
     d: "Gain Node",
     nodeType: AudioNodeType.Gain,
   },
   oscillatorNode: {
     f: (ctx) => ctx.createOscillator(),
-    params: ["frequency"],
     d: "Oscillator Node",
     nodeType: AudioNodeType.Oscillator,
   },
@@ -82,7 +74,7 @@ export default function Home() {
     e: MouseEvent,
     node: INode,
     inputIndex: number,
-    ref: RefObject<HTMLDivElement>
+    _ref: RefObject<HTMLDivElement>
   ) => {
     e.preventDefault();
     if (e.type === "mousedown") {
@@ -101,7 +93,7 @@ export default function Home() {
     e: MouseEvent,
     node: INode,
     outputIndex: number,
-    ref: RefObject<HTMLDivElement>
+    _ref: RefObject<HTMLDivElement>
   ) => {
     e.preventDefault();
     if (e.type === "mousedown") {
@@ -117,8 +109,8 @@ export default function Home() {
   };
 
   const makeConnection = (start: ConnNode, end: ConnNode): boolean => {
-    const [startNode, startNodeType, startIdx] = start;
-    const [endNode, endNodeType, endIdx] = end;
+    const [startNode, startNodeType, _a] = start;
+    const [endNode, endNodeType, _b] = end;
 
     if (startNodeType === endNodeType) return false;
 
@@ -152,8 +144,8 @@ export default function Home() {
   const handleDeleteConnection = (connIdx: number) => {
     const [start, end] = connections[connIdx];
 
-    const [startNode, startNodeType, startIdx] = start;
-    const [endNode, endNodeType, endIdx] = end;
+    const [startNode, startNodeType, _a] = start;
+    const [endNode, _b, _c] = end;
 
     if (startNodeType === "output") {
       startNode.node.disconnect(endNode.node);
@@ -259,8 +251,8 @@ export default function Home() {
         onMouseUp={handleMouseUp}
       >
         <Dropdown title={"Add Node"}>
-          {Object.entries(nodeOptions).map(([k, v], i) => {
-            const { f, d, params, nodeType } = v;
+          {Object.entries(nodeOptions).map(([_, v], i) => {
+            const { f, d, nodeType } = v;
             return (
               <button key={i} onClick={() => handleCreateNode(d, nodeType, f)}>
                 {d}

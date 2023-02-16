@@ -100,7 +100,7 @@ const Node = (props: PropsWithChildren<Props>) => {
           // gap: "6px",
           backgroundColor: "white",
           color: "black",
-          minWidth: "200px",
+          minWidth: "16rem",
           position: "absolute",
         }}
       >
@@ -115,8 +115,7 @@ const Node = (props: PropsWithChildren<Props>) => {
         >
           <span
             style={{
-              paddingTop: "4px",
-              paddingBottom: "4px",
+              padding: "4px",
             }}
           >
             {node.name}
@@ -125,12 +124,18 @@ const Node = (props: PropsWithChildren<Props>) => {
             style={{
               padding: "4px",
               borderLeft: "4px solid black",
+              width: "2rem",
+              textAlign: "center",
             }}
           >
             <button
               style={{
                 background: "none",
                 color: "inherit",
+                textDecoration: "none",
+                border: "0px solid transparent",
+                fontWeight: "bold",
+                cursor: "pointer",
               }}
               onClick={handleDelete}
             >

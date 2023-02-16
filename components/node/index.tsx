@@ -9,7 +9,7 @@ import {
 } from "react";
 import Draggable from "react-draggable";
 
-import { INode, ConnNodeTuple } from "@/types";
+import { INode, ConnNode } from "@/types";
 
 type NodeProps = {
   node: INode;
