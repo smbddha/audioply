@@ -1,18 +1,12 @@
 import React, { useState } from "react";
 
 import ParamSlider from "@/uicomponents/paramslider";
-import Dropdown from "../dropdown";
+import SelectionDropdown from "@/uicomponents/SelectionDropdown";
+import Button from "@/uicomponents/button";
 
 type Props = {
   node: OscillatorNode;
 };
-
-// enum OscillatorTypes {
-//   sin = "sine",
-//   square = "square",
-//   triangle = "triangle",
-//   sawtooth = "sawtooth",
-// }
 
 const oscillatorTypes: OscillatorType[] = [
   "sine",
@@ -26,6 +20,7 @@ const OscillatorNode = (props: Props) => {
   const { node } = props;
 
   const [isPlaying, setIsPlaying] = useState(false);
+  const [oscType, setOscType] = useState(node.type);
 
   const handleFreqChange = (val: number): void => {
     node.frequency.value = val;
@@ -37,6 +32,7 @@ const OscillatorNode = (props: Props) => {
 
   const handleOscTypeChange = (newType: OscillatorType): void => {
     node.type = newType;
+    setOscType(newType);
   };
 
   const handlePlayToggle = () => {
@@ -65,14 +61,22 @@ const OscillatorNode = (props: Props) => {
         limits={[-1200, 1200]}
         unit="cents"
       />
-      <Dropdown title={node.type}>
-        {oscillatorTypes.map((ot, i) => (
-          <button key={i} onClick={() => handleOscTypeChange(ot)}>
+
+      <div style={{ margin: "0.3rem" }}>
+        <Button handleClick={handlePlayToggle}>
+          {isPlaying ? "Stop" : "Play"}
+        </Button>
+      </div>
+      <SelectionDropdown
+        title={oscType}
+        items={oscillatorTypes}
+        handleClick={(it, i) => handleOscTypeChange(it)}
+      />
+      {/*oscillatorTypes.map((ot, i) => (
+          <span key={i} onClick={() => handleOscTypeChange(ot)}>
             {ot}
-          </button>
-        ))}
-      </Dropdown>
-      <button onClick={handlePlayToggle}>{isPlaying ? "Stop" : "Play"}</button>
+          </span>
+        ))*/}
     </>
   );
 };

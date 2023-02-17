@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 
 import ParamSlider from "@/uicomponents/paramslider";
-import Dropdown from "../dropdown";
+import SelectionDropdown from "@/uicomponents/SelectionDropdown";
 
 type Props = {
   node: BiquadFilterNode;
@@ -21,6 +21,8 @@ const biquadFilterTypes: BiquadFilterType[] = [
 const BiquadFilterNode = (props: Props) => {
   const { node } = props;
 
+  const [filterType, setFilterType] = useState(node.type);
+
   const handleFreqChange = (val: number): void => {
     node.frequency.value = val;
   };
@@ -38,9 +40,8 @@ const BiquadFilterNode = (props: Props) => {
   };
 
   const handleTypeChange = (newType: BiquadFilterType): void => {
-    console.log(newType);
+    setFilterType(newType);
     node.type = newType;
-    console.log(node.type);
   };
 
   console.log("HERE");
@@ -72,13 +73,12 @@ const BiquadFilterNode = (props: Props) => {
         handleChange={handleGainChange}
         limits={[0, 10]}
       />
-      <Dropdown title={node.type}>
-        {biquadFilterTypes.map((t, i) => (
-          <button key={i} onClick={() => handleTypeChange(t)}>
-            {t}
-          </button>
-        ))}
-      </Dropdown>
+
+      <SelectionDropdown
+        title={filterType}
+        items={biquadFilterTypes}
+        handleClick={(it, i) => handleTypeChange(it)}
+      />
       {/*<TypeControl default={""} options={""} />*/}
     </>
   );

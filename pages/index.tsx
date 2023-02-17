@@ -17,6 +17,7 @@ import MyAudioNode from "@/components/MyAudioNode";
 
 import { INode, ConnNode, AudioNodeType } from "@/types";
 import SVGLayer from "@/components/svglayer";
+import Header from "@/components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,32 +31,32 @@ const nodeOptions: Record<
 > = {
   analyserNode: {
     f: (ctx) => ctx.createAnalyser(),
-    d: "Analyser",
+    d: "analyser",
     nodeType: AudioNodeType.Analyser,
   },
   delayNode: {
     f: (ctx) => ctx.createDelay(),
-    d: "Delay",
+    d: "delay",
     nodeType: AudioNodeType.Delay,
   },
   convolverNode: {
     f: (ctx) => ctx.createConvolver(),
-    d: "Convolver",
+    d: "convolver",
     nodeType: AudioNodeType.Convolver,
   },
   biquadFilter: {
     f: (ctx) => ctx.createBiquadFilter(),
-    d: "Biquad Filter",
+    d: "biquad filter",
     nodeType: AudioNodeType.Biquad,
   },
   gainNode: {
     f: (ctx) => ctx.createGain(),
-    d: "Gain Node",
+    d: "gain",
     nodeType: AudioNodeType.Gain,
   },
   oscillatorNode: {
     f: (ctx) => ctx.createOscillator(),
-    d: "Oscillator Node",
+    d: "oscillator",
     nodeType: AudioNodeType.Oscillator,
   },
 };
@@ -240,16 +241,17 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Web Audio Api Playgroudn</title>
+        <title>Web Audio Api Playground</title>
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main
-        className={styles.main}
+        className={`${styles.main} ${inter.className}`}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
       >
+        <Header />
         <Dropdown title={"Add Node"}>
           {Object.entries(nodeOptions).map(([_, v], i) => {
             const { f, d, nodeType } = v;

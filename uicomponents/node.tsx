@@ -115,7 +115,9 @@ const Node = (props: PropsWithChildren<Props>) => {
         >
           <span
             style={{
-              padding: "4px",
+              paddingLeft: "1px",
+              fontWeight: "600",
+              fontSize: "1.2rem",
             }}
           >
             {node.name}
@@ -184,7 +186,7 @@ const Node = (props: PropsWithChildren<Props>) => {
           style={{
             display: "flex",
             flexDirection: "column",
-            padding: "4px",
+            // padding: "4px",
             gap: "6px",
           }}
         >
