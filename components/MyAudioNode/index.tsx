@@ -6,6 +6,7 @@ import BiquadFilterNode from "@/components/BiquadFilterNode";
 import GainNode from "@/components/GainNode";
 import ConvolverNode from "@/components/ConvolverNode";
 import AnalyserNode from "@/components/AnalyserNode";
+import CompressorNode from "@/components/CompressorNode";
 
 import Node from "@/uicomponents/node";
 import { AudioNodeType, INode } from "@/types";
@@ -44,6 +45,8 @@ const MyAudioNode = (props: Props) => {
         return <ConvolverNode node={node.node as ConvolverNode} />;
       case AudioNodeType.Analyser:
         return <AnalyserNode node={node.node as AnalyserNode} />;
+      case AudioNodeType.Compressor:
+        return <CompressorNode node={node.node as AnalyserNode} />;
       default:
         return <></>;
     }

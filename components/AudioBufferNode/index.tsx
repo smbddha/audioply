@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from "react";
 
-// import ParamSlider from "@/uicomponents/paramslider";
 import SelectionDropdown from "@/uicomponents/SelectionDropdown";
+import Button from "@/uicomponents/button";
 
-const IR_FILES = ["irs/ir1.ogg", "irs/ir2.ogg"];
+const AUDIO_FILES = ["sounds/test1.ogg", "sounds/test2.ogg"];
 
 type Props = {
-  node: ConvolverNode;
+  node: AudioBufferSourceNode;
 };
 
-const ConvolverNode = (props: Props) => {
+const AudioBufferNode = (props: Props) => {
   const { node } = props;
 
-  const [selectedFile, setSelectedFile] = useState(IR_FILES[0]);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const [selectedFile, setSelectedFile] = useState(AUDIO_FILES[0]);
 
   useEffect(() => {
     const fetchIR = async () => {
-      let response = await fetch(IR_FILES[0]);
+      let response = await fetch(AUDIO_FILES[0]);
       let arraybuffer = await response.arrayBuffer();
       node.buffer = await node.context.decodeAudioData(arraybuffer);
     };
@@ -33,15 +35,30 @@ const ConvolverNode = (props: Props) => {
     setSelectedFile(f);
   };
 
+  const handlePlayToggle = () => {
+    if (isPlaying) {
+      node.stop();
+    } else {
+      node.start();
+    }
+
+    setIsPlaying(!isPlaying);
+  };
+
   return (
     <>
+      <div style={{ margin: "0.3rem" }}>
+        <Button handleClick={handlePlayToggle}>
+          {isPlaying ? "Stop" : "Play"}
+        </Button>
+      </div>
       <SelectionDropdown
         title={selectedFile}
-        items={IR_FILES}
+        items={AUDIO_FILES}
         handleClick={(it, i) => handleFileChange(it)}
       />
     </>
   );
 };
 
-export default ConvolverNode;
+export default AudioBufferNode;

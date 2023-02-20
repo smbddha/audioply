@@ -59,6 +59,11 @@ const nodeOptions: Record<
     d: "oscillator",
     nodeType: AudioNodeType.Oscillator,
   },
+  compressorNode: {
+    f: (ctx) => ctx.createDynamicsCompressor(),
+    d: "dynamics compressor",
+    nodeType: AudioNodeType.Compressor,
+  },
 };
 
 export default function Home() {
@@ -187,7 +192,7 @@ export default function Home() {
         {graph.map((node, i) => {
           return (
             <MyAudioNode
-              key={i}
+              key={node.id}
               node={node}
               inputMouseHandler={inputMouseHandler}
               outputMouseHandler={outputMouseHandler}

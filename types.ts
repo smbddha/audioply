@@ -19,6 +19,7 @@ export enum AudioNodeType {
   Biquad = "BIQUAD",
   Convolver = "CONVOLVER",
   Analyser = "ANALYSER",
+  Compressor = "COMPRESSOR",
 }
 
 export type ConnNode = [INode, OutputOrInput, number];

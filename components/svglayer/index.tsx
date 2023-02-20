@@ -1,7 +1,7 @@
 import { useState, useEffect, RefObject } from "react";
 
 import { ConnNode, Point } from "@/types";
-import { getCoords, getRefCoords } from "@/utils";
+import { getCoords } from "@/utils";
 
 type Props = {
   mouseRef: RefObject<Point>;
@@ -27,31 +27,8 @@ const SVGLayer = (props: Props) => {
   }, []);
 
   const getConnCoords = (start: ConnNode, end: ConnNode) => {
-    // const [startNode, startNodeType, startIdx] = start;
-    // const [endNode, endNodeType, endIdx] = end;
-
-    // const startRef =
-    //   startNodeType === "input"
-    //     ? startNode.inputRefs[startIdx]
-    //     : startNode.outputRefs[startIdx];
-
-    // const endRef =
-    //   endNodeType === "output"
-    //     ? endNode.outputRefs[endIdx]
-    //     : endNode.inputRefs[endIdx];
-
-    // const startRect = startRef.current?.getBoundingClientRect();
-    // const endRect = endRef.current?.getBoundingClientRect();
-
     const p1 = getCoords(start);
     const p2 = getCoords(end);
-
-    // return {
-    //   x1: startRect?.x || 0,
-    //   y1: startRect?.y || 0,
-    //   x2: endRect?.x || 0,
-    //   y2: endRect?.y || 0,
-    // };
 
     return {
       x1: p1?.x || 0,
@@ -62,8 +39,6 @@ const SVGLayer = (props: Props) => {
   };
 
   const handleConnectionClick = (e: MouseEvent, connIdx: number) => {
-    console.log("CLICKED ", connIdx);
-    console.log("CONNECTIONS", connections);
     deleteConnection(connIdx);
   };
 

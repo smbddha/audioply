@@ -10,14 +10,13 @@ import Draggable from "react-draggable";
 import { INode } from "@/types";
 
 type InputOutputProps = {
-  // ref: RefObject<HTMLDivElement | undefined>;
   mouseHandler: (e: MouseEvent) => void;
   isOutput: boolean;
 };
 
+// forward ref so we can pass a pre-created refobject
 const InputOutputNode = forwardRef<HTMLDivElement, InputOutputProps>(
   function InputOutputNode(props, ref) {
-    // const iref = useRef<HTMLDivElement>(ref);
     const { mouseHandler, isOutput } = props;
 
     return (
@@ -58,21 +57,6 @@ type Props = {
   ) => void;
   deleteNode: (a: INode) => void;
 };
-
-/*
-	node has the event handers for making connections, but how is it aware of
-	the node that is passed to it ...
-	there needs to be some default connect and disconnect feature ...
-
-	so what if we had a container node and then the inner part of the node ..
-
-	Node -> OscillatorNode
-
-	<Node node={node} eventHandler={asdf} />
-	<div>
-	<OscillatorNode/>
-	</div>
-*/
 
 const Node = (props: PropsWithChildren<Props>) => {
   const { node, inputMouseHandler, outputMouseHandler, deleteNode, children } =

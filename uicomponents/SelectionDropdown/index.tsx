@@ -39,6 +39,7 @@ const SelectionDropdown = (props: Props) => {
         ? items.map((it, i) => {
             return (
               <div
+                key={i}
                 className={styles.dropdownChild}
                 onClick={(_) => wrapHandleClick(it, i)}
               >
