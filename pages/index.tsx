@@ -15,6 +15,8 @@ import styles from "@/styles/Home.module.css";
 import Dropdown from "@/components/dropdown";
 import MyAudioNode from "@/components/MyAudioNode";
 
+import { useStore } from "@/store";
+
 import { INode, ConnNode, AudioNodeType } from "@/types";
 import SVGLayer from "@/components/svglayer";
 import Header from "@/components/Header";
@@ -75,7 +77,12 @@ export default function Home() {
   const [audioCtx, _] = useState<AudioContext | null>(
     typeof window !== "undefined" ? new AudioContext() : null
   );
-  const [graph, setGraph] = useState<INode[]>([]);
+
+  const graph = useStore((state) => state.nodes);
+  const addNode = useStore((state) => state.addNode);
+  const deleteNode = useStore((state) => state.deleteNode);
+
+  // const [graph, setGraph] = useState<INode[]>([]);
   const [connections, setConnections] = useState<[ConnNode, ConnNode][]>([]);
   const mouseRef = useRef({ x: 0, y: 0 });
   const [connectionStart, setConnectionStart] = useState<ConnNode | null>(null);
@@ -170,25 +177,26 @@ export default function Home() {
   };
 
   const handleDeleteNode = (node: INode) => {
-    setGraph((prev) => {
-      return prev.filter((n) => n.id !== node.id);
-    });
+    // setGraph((prev) => {
+    //   return prev.filter((n) => n.id !== node.id);
+    // });
 
-    graph.map((n) => {
-      if (n.id === node.id) {
-        n.node.disconnect();
-      }
+    // graph.map((n) => {
+    //   if (n.id === node.id) {
+    //     n.node.disconnect();
+    //   }
 
-      if (n.id === node.id) {
-        n.node.disconnect();
-      }
-    });
+    //   if (n.id === node.id) {
+    //     n.node.disconnect();
+    //   }
+    // });
 
-    setConnections((prev) => {
-      return prev.filter(([start, end]) => {
-        return !(start[0].id === node.id || end[0].id === node.id);
-      });
-    });
+    // setConnections((prev) => {
+    //   return prev.filter(([start, end]) => {
+    //     return !(start[0].id === node.id || end[0].id === node.id);
+    //   });
+    // });
+    deleteNode(node);
   };
 
   const renderNodes = useMemo(() => {
@@ -229,23 +237,35 @@ export default function Home() {
       node.constructor.name,
       Object.keys(node)
     );
-    setGraph((g) => {
-      return [
-        ...g,
-        {
-          id: "id" + Math.random().toString(16).slice(2),
-          name: d,
-          node: node,
-          type: nodeType,
-          inputRefs: Array(node.numberOfInputs).fill(
-            createRef<HTMLDivElement>()
-          ),
-          outputRefs: Array(node.numberOfOutputs).fill(
-            createRef<HTMLDivElement>()
-          ),
-        },
-      ];
-    });
+
+    const newNode: INode = {
+      id: "id" + Math.random().toString(16).slice(2),
+      name: d,
+      node: node,
+      type: nodeType,
+      inputRefs: Array(node.numberOfInputs).fill(createRef<HTMLDivElement>()),
+      outputRefs: Array(node.numberOfOutputs).fill(createRef<HTMLDivElement>()),
+    };
+
+    // setGraph((g) => {
+    //   return [
+    //     ...g,
+    //     {
+    //       id: "id" + Math.random().toString(16).slice(2),
+    //       name: d,
+    //       node: node,
+    //       type: nodeType,
+    //       inputRefs: Array(node.numberOfInputs).fill(
+    //         createRef<HTMLDivElement>()
+    //       ),
+    //       outputRefs: Array(node.numberOfOutputs).fill(
+    //         createRef<HTMLDivElement>()
+    //       ),
+    //     },
+    //   ];
+    // });
+
+    addNode(newNode);
   };
 
   return (

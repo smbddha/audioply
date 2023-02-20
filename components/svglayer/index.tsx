@@ -1,4 +1,4 @@
-import { useState, useEffect, RefObject } from "react";
+import { useState, useEffect, RefObject, Fragment } from "react";
 
 import { ConnNode, Point } from "@/types";
 import { getCoords } from "@/utils";
@@ -78,7 +78,7 @@ const SVGLayer = (props: Props) => {
         ) : null}
         {connections.map((conn: [ConnNode, ConnNode], i) => {
           return (
-            <>
+            <Fragment key={i}>
               <line
                 key={`${i}`}
                 {...getConnCoords(conn[0], conn[1])}
@@ -87,15 +87,15 @@ const SVGLayer = (props: Props) => {
                 onClick={(e) => handleConnectionClick(e, i)}
               />
               <line
-                style={{ pointerEvents: "auto", cursor: "pointer" }}
                 key={`${i}_overlay`}
+                style={{ pointerEvents: "auto", cursor: "pointer" }}
                 {...getConnCoords(conn[0], conn[1])}
                 stroke="red"
                 strokeWidth={10}
                 strokeOpacity={0.0}
                 onClick={(e) => handleConnectionClick(e, i)}
               />
-            </>
+            </Fragment>
           );
         })}
       </svg>

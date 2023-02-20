@@ -72,6 +72,7 @@ const OscillatorNode = (props: Props) => {
         {oscillatorTypes.map((oType, i) => {
           return (
             <SelectionDropdownItem
+              key={i}
               handleClick={(e) => handleOscTypeChange(oType)}
             >
               <span>{oType}</span>
