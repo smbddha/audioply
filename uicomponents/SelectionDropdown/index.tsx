@@ -1,14 +1,15 @@
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, PropsWithChildren } from "react";
 import styles from "./Dropdown.module.css";
 
 type Props = {
   title: string;
-  items: string[];
-  handleClick: (it: string, i: number) => void;
+  style?: React.CSSProperties;
+  // items: string[];
+  // handleClick: (it: string, i: number) => void;
 };
 
-const SelectionDropdown = (props: Props) => {
-  const { title, items, handleClick } = props;
+const SelectionDropdown = (props: PropsWithChildren<Props>) => {
+  const { title, style, children } = props;
 
   const [isShowing, setIsShowing] = useState<boolean>(false);
 
@@ -16,13 +17,12 @@ const SelectionDropdown = (props: Props) => {
     setIsShowing(!isShowing);
   };
 
-  const wrapHandleClick = (it: string, i: number) => {
+  const handleChildClick = () => {
     setIsShowing(!isShowing);
-    handleClick(it, i);
   };
 
   return (
-    <div className={styles.dropdownContainer}>
+    <div className={styles.dropdownContainer} style={style}>
       <div>
         <div className={styles.dropdownHeader} onClick={toggleDropdown}>
           <span>{title}</span>
@@ -35,7 +35,7 @@ const SelectionDropdown = (props: Props) => {
           </div>
         </div>
       </div>
-      {isShowing
+      {/*isShowing
         ? items.map((it, i) => {
             return (
               <div
@@ -47,14 +47,10 @@ const SelectionDropdown = (props: Props) => {
               </div>
             );
           })
-        : null}
-      {/*isShowing && children ? (
-        <div>
-          {children.map((child, i) => {
-            return <div className={styles.dropdownChild}>{child}</div>;
-          })}
-        </div>
-      ) : null*/}
+        : null*/}
+      {isShowing && children ? (
+        <div onClick={handleChildClick}>{children}</div>
+      ) : null}
     </div>
   );
 };

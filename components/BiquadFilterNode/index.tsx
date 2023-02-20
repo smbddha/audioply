@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import ParamSlider from "@/uicomponents/paramslider";
 import SelectionDropdown from "@/uicomponents/SelectionDropdown";
+import SelectionDropdownItem from "@/uicomponents/SelectionDropdown/item";
 
 type Props = {
   node: BiquadFilterNode;
@@ -73,13 +74,18 @@ const BiquadFilterNode = (props: Props) => {
         handleChange={handleGainChange}
         limits={[0, 10]}
       />
-
-      <SelectionDropdown
-        title={filterType}
-        items={biquadFilterTypes}
-        handleClick={(it, i) => handleTypeChange(it)}
-      />
-      {/*<TypeControl default={""} options={""} />*/}
+      <SelectionDropdown title={filterType}>
+        {biquadFilterTypes.map((fType, i) => {
+          return (
+            <SelectionDropdownItem
+              key={i}
+              handleClick={(_) => handleTypeChange(fType)}
+            >
+              <span>{fType}</span>
+            </SelectionDropdownItem>
+          );
+        })}
+      </SelectionDropdown>
     </>
   );
 };

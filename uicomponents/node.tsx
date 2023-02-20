@@ -29,7 +29,7 @@ const InputOutputNode = forwardRef<HTMLDivElement, InputOutputProps>(
         onMouseEnter={(e) => mouseHandler(e)}
         onMouseLeave={(e) => mouseHandler(e)}
       >
-        <svg width={19} height={19}>
+        <svg style={{ cursor: "pointer" }} width={19} height={19}>
           {isOutput ? (
             <polygon points="18,0 0,9 18,18" fill="black" />
           ) : (

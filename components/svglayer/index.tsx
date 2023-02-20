@@ -87,7 +87,7 @@ const SVGLayer = (props: Props) => {
                 onClick={(e) => handleConnectionClick(e, i)}
               />
               <line
-                style={{ pointerEvents: "auto" }}
+                style={{ pointerEvents: "auto", cursor: "pointer" }}
                 key={`${i}_overlay`}
                 {...getConnCoords(conn[0], conn[1])}
                 stroke="red"

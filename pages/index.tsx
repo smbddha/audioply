@@ -64,6 +64,11 @@ const nodeOptions: Record<
     d: "dynamics compressor",
     nodeType: AudioNodeType.Compressor,
   },
+  audioBufferNode: {
+    f: (ctx) => ctx.createBufferSource(),
+    d: "audio buffer source",
+    nodeType: AudioNodeType.AudioBuffer,
+  },
 };
 
 export default function Home() {

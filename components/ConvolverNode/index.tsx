@@ -1,7 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  ChangeEvent,
+  MouseEvent,
+} from "react";
 
 // import ParamSlider from "@/uicomponents/paramslider";
 import SelectionDropdown from "@/uicomponents/SelectionDropdown";
+import SelectionDropdownItem from "@/uicomponents/SelectionDropdown/item";
 
 const IR_FILES = ["irs/ir1.ogg", "irs/ir2.ogg"];
 
@@ -13,6 +20,7 @@ const ConvolverNode = (props: Props) => {
   const { node } = props;
 
   const [selectedFile, setSelectedFile] = useState(IR_FILES[0]);
+  const inputFileRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     const fetchIR = async () => {
@@ -33,12 +41,66 @@ const ConvolverNode = (props: Props) => {
     setSelectedFile(f);
   };
 
+  const onUploadClick = (e: MouseEvent) => {
+    if (!inputFileRef || !inputFileRef.current) return;
+
+    e.stopPropagation();
+    e.preventDefault();
+    inputFileRef.current.click();
+  };
+
+  const handleUploadChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    if (!e.target.files) return;
+    const file = e.target.files[0];
+
+    console.log(file);
+
+    let reader = new FileReader();
+    reader.readAsArrayBuffer(file);
+    reader.onload = async (readerEvent: ProgressEvent<FileReader>) => {
+      console.log("in onload");
+      if (!readerEvent.target) return;
+
+      let arraybuffer = readerEvent.target.result;
+      if (!arraybuffer) return;
+      if (typeof arraybuffer === "string") {
+        // let arraybuffer: ArrayBuffer = readerEvent.target.result;
+        console.log("AHH", arraybuffer);
+      } else {
+        console.log("loading audio data...");
+        node.buffer = await node.context.decodeAudioData(arraybuffer);
+
+        console.log("node.buffer", node.buffer);
+
+        setSelectedFile(file.name);
+      }
+    };
+  };
+
   return (
     <>
-      <SelectionDropdown
-        title={selectedFile}
-        items={IR_FILES}
-        handleClick={(it, i) => handleFileChange(it)}
+      <SelectionDropdown title={selectedFile}>
+        {IR_FILES.map((f, i) => {
+          return (
+            <SelectionDropdownItem handleClick={(e) => handleFileChange(f)}>
+              <span>{f}</span>
+            </SelectionDropdownItem>
+          );
+        })}
+
+        <SelectionDropdownItem handleClick={onUploadClick}>
+          <span>Load file...</span>
+        </SelectionDropdownItem>
+      </SelectionDropdown>
+      <input
+        type="file"
+        id="file"
+        ref={inputFileRef}
+        style={{ display: "none" }}
+        onChange={handleUploadChange}
       />
     </>
   );

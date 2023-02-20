@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import ParamSlider from "@/uicomponents/paramslider";
 import SelectionDropdown from "@/uicomponents/SelectionDropdown";
+import SelectionDropdownItem from "@/uicomponents/SelectionDropdown/item";
 import Button from "@/uicomponents/button";
 
 type Props = {
@@ -67,16 +68,17 @@ const OscillatorNode = (props: Props) => {
           {isPlaying ? "Stop" : "Play"}
         </Button>
       </div>
-      <SelectionDropdown
-        title={oscType}
-        items={oscillatorTypes}
-        handleClick={(it, i) => handleOscTypeChange(it)}
-      />
-      {/*oscillatorTypes.map((ot, i) => (
-          <span key={i} onClick={() => handleOscTypeChange(ot)}>
-            {ot}
-          </span>
-        ))*/}
+      <SelectionDropdown title={oscType}>
+        {oscillatorTypes.map((oType, i) => {
+          return (
+            <SelectionDropdownItem
+              handleClick={(e) => handleOscTypeChange(oType)}
+            >
+              <span>{oType}</span>
+            </SelectionDropdownItem>
+          );
+        })}
+      </SelectionDropdown>
     </>
   );
 };
