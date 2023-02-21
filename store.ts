@@ -5,15 +5,17 @@ import { immer } from "zustand/middleware/immer";
 import { ConnNode, INode } from "./types";
 
 interface IStore {
-  nodes: INode[];
+  nodes: INode<AudioNode>[];
   connections: [ConnNode, ConnNode][];
-  addNode: (a: INode) => void;
-  deleteNode: (a: INode) => void;
+  addNode: (a: INode<AudioNode>) => void;
+  deleteNode: (a: INode<AudioNode>) => void;
   updateNode: (a: Partial<INode>) => void;
+  addConnections: (...a: [ConnNode, ConnNode][]) => void;
   addConnections: (...a: [ConnNode, ConnNode][]) => void;
   deleteConnection: (idx: number) => void;
   filterConnections: (a: (b: [ConnNode, ConnNode]) => boolean) => void;
   removeConnectionsWithNode: (a: INode) => void;
+  remakeConnectionsWithNode: (a: INode<AudioNode>) => void;
 }
 
 // setAutoFreeze(false);
@@ -122,10 +124,11 @@ export const useStore = create<IStore>((set, get) => ({
 
         if (startNodeType === endNodeType) return false;
 
+        console.log(startNode, endNode);
         if (startNodeType === "output") {
-          startNode.node.connect(endNode.node);
+          startNode.audioNode.connect(endNode.audioNode);
         } else {
-          endNode.node.connect(startNode.node);
+          endNode.audioNode.connect(startNode.audioNode);
         }
       });
       return {
@@ -134,10 +137,29 @@ export const useStore = create<IStore>((set, get) => ({
       };
     });
   },
-  removeConnectionsWithNode: (node: INode) => {
+  removeConnectionsWithNode: (node: INode<AudioNode>) => {
     get().filterConnections(
       ([start, end]) => !(start[0].id === node.id || end[0].id === node.id)
     );
+  },
+  remakeConnectionsWithNode: (node: INode<AudioNode>) => {
+    set((state) => {
+      state.connections.map(([start, end]) => {
+        if (!(start[0].id === node.id || end[0].id === node.id)) return;
+
+        const [startNode, startNodeType, _a] = start;
+        const [endNode, _b, _c] = end;
+
+        if (startNodeType === "output") {
+          startNode.audioNode.connect(endNode.audioNode);
+        } else {
+          endNode.audioNode.connect(startNode.audioNode);
+        }
+      });
+      return {
+        ...state,
+      };
+    });
   },
   filterConnections: (pred: (a: [ConnNode, ConnNode]) => boolean) => {
     console.log("FILTERING");
@@ -149,9 +171,9 @@ export const useStore = create<IStore>((set, get) => ({
         const [endNode, _b, _c] = end;
 
         if (startNodeType === "output") {
-          startNode.node.disconnect(endNode.node);
+          startNode.audioNode.disconnect(endNode.audioNode);
         } else {
-          endNode.node.disconnect(startNode.node);
+          endNode.audioNode.disconnect(startNode.audioNode);
         }
       });
       return {
@@ -168,9 +190,9 @@ export const useStore = create<IStore>((set, get) => ({
       const [endNode, _b, _c] = end;
 
       if (startNodeType === "output") {
-        startNode.node.disconnect(endNode.node);
+        startNode.audioNode.disconnect(endNode.audioNode);
       } else {
-        endNode.node.disconnect(startNode.node);
+        endNode.audioNode.disconnect(startNode.audioNode);
       }
       return {
         ...state,

@@ -9,11 +9,12 @@ import React, {
 // import ParamSlider from "@/uicomponents/paramslider";
 import SelectionDropdown from "@/uicomponents/SelectionDropdown";
 import SelectionDropdownItem from "@/uicomponents/SelectionDropdown/item";
+import { INode } from "@/types";
 
 const IR_FILES = ["irs/ir1.ogg", "irs/ir2.ogg"];
 
 type Props = {
-  node: ConvolverNode;
+  node: INode<ConvolverNode>;
 };
 
 const ConvolverNode = (props: Props) => {
@@ -26,7 +27,9 @@ const ConvolverNode = (props: Props) => {
     const fetchIR = async () => {
       let response = await fetch(IR_FILES[0]);
       let arraybuffer = await response.arrayBuffer();
-      node.buffer = await node.context.decodeAudioData(arraybuffer);
+      node.audioNode.buffer = await node.audioNode.context.decodeAudioData(
+        arraybuffer
+      );
     };
 
     fetchIR();
@@ -36,7 +39,9 @@ const ConvolverNode = (props: Props) => {
     // what
     let response = await fetch(f);
     let arraybuffer = await response.arrayBuffer();
-    node.buffer = await node.context.decodeAudioData(arraybuffer);
+    node.audioNode.buffer = await node.audioNode.context.decodeAudioData(
+      arraybuffer
+    );
 
     setSelectedFile(f);
   };
@@ -71,9 +76,11 @@ const ConvolverNode = (props: Props) => {
         console.log("AHH", arraybuffer);
       } else {
         console.log("loading audio data...");
-        node.buffer = await node.context.decodeAudioData(arraybuffer);
+        node.audioNode.buffer = await node.audioNode.context.decodeAudioData(
+          arraybuffer
+        );
 
-        console.log("node.buffer", node.buffer);
+        console.log("node.audioNode.buffer", node.audioNode.buffer);
 
         setSelectedFile(file.name);
       }
@@ -85,7 +92,10 @@ const ConvolverNode = (props: Props) => {
       <SelectionDropdown title={selectedFile}>
         {IR_FILES.map((f, i) => {
           return (
-            <SelectionDropdownItem handleClick={(e) => handleFileChange(f)}>
+            <SelectionDropdownItem
+              key={i}
+              handleClick={(e) => handleFileChange(f)}
+            >
               <span>{f}</span>
             </SelectionDropdownItem>
           );

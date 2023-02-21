@@ -5,6 +5,7 @@ import SelectionDropdown from "@/uicomponents/SelectionDropdown";
 import SelectionDropdownItem from "@/uicomponents/SelectionDropdown/item";
 import Button from "@/uicomponents/button";
 import { INode } from "@/types";
+import { useStore } from "@/store";
 
 type Props = {
   node: INode<OscillatorNode>;
@@ -23,6 +24,10 @@ const OscillatorNode = (props: Props) => {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [oscType, setOscType] = useState(node.audioNode.type);
+
+  const remakeConnectionsWithNode = useStore(
+    (state) => state.remakeConnectionsWithNode
+  );
 
   const handleFreqChange = (val: number): void => {
     node.audioNode.frequency.value = val;
@@ -48,6 +53,12 @@ const OscillatorNode = (props: Props) => {
       newOsc.type = node.audioNode.type;
 
       // updateOsc()
+      // TODO eventually do this mutation in state, dont think
+      // it actually matters tho :)
+      node.audioNode = newOsc;
+
+      // remake all audionode connections with the new node
+      remakeConnectionsWithNode(node);
     } else {
       node.audioNode.start();
     }

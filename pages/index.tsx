@@ -126,20 +126,19 @@ export default function Home() {
       setConnectionEnd(null);
     } else {
       console.log("Unrecognized type ", e.type);
-    }
-  };
+     };
 
   const makeConnection = (start: ConnNode, end: ConnNode): boolean => {
-    const [startNode, startNodeType, _a] = start;
-    const [endNode, endNodeType, _b] = end;
+    // const [startNode, startNodeType, _a] = start;
+    // const [endNode, endNodeType, _b] = end;
 
-    if (startNodeType === endNodeType) return false;
+    // if (startNodeType === endNodeType) return false;
 
-    if (startNodeType === "output") {
-      startNode.node.connect(endNode.node);
-    } else {
-      endNode.node.connect(startNode.node);
-    }
+    // if (startNodeType === "output") {
+    //   startNode.audioNode.connect(endNode.audioNode);
+    // } else {
+    //   endNode.audioNode.connect(startNode.node);
+    // }
 
     // setConnections((prev) => {
     //   return [...prev, [start, end]];
@@ -170,9 +169,9 @@ export default function Home() {
     const [endNode, _b, _c] = end;
 
     if (startNodeType === "output") {
-      startNode.node.disconnect(endNode.node);
+      startNode.audioNode.disconnect(endNode.audioNode);
     } else {
-      endNode.node.disconnect(startNode.node);
+      endNode.audioNode.disconnect(startNode.audioNode);
     }
 
     // setConnections((prev) => {
@@ -182,18 +181,18 @@ export default function Home() {
     deleteConnection(connIdx);
   };
 
-  const handleDeleteNode = (node: INode) => {
+  const handleDeleteNode = (node: INode<AudioNode>) => {
     // setGraph((prev) => {
     //   return prev.filter((n) => n.id !== node.id);
     // });
 
     // graph.map((n) => {
     //   if (n.id === node.id) {
-    //     n.node.disconnect();
+    //     n.audioNode.disconnect();
     //   }
 
     //   if (n.id === node.id) {
-    //     n.node.disconnect();
+    //     n.audioNode.disconnect();
     //   }
     // });
 

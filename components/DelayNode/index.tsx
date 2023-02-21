@@ -1,23 +1,24 @@
 import React from "react";
 
 import ParamSlider from "@/uicomponents/paramslider";
+import { INode } from "@/types";
 
 type Props = {
-  node: DelayNode;
+  node: INode<DelayNode>;
 };
 
 const DelayNode = (props: Props) => {
   const { node } = props;
 
   const handleDelayTimeChange = (val: number) => {
-    node.delayTime.value = val;
+    node.audioNode.delayTime.value = val;
   };
 
   return (
     <>
       <ParamSlider
         title="Delay Time"
-        audioParam={node.delayTime}
+        audioParam={node.audioNode.delayTime}
         handleChange={handleDelayTimeChange}
       />
     </>

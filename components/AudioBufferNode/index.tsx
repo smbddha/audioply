@@ -4,11 +4,13 @@ import ParamSlider from "@/uicomponents/paramslider";
 import SelectionDropdown from "@/uicomponents/SelectionDropdown";
 import SelectionDropdownItem from "@/uicomponents/SelectionDropdown/item";
 import Button from "@/uicomponents/button";
+import { INode } from "@/types";
+import { useStore } from "@/store";
 
 const AUDIO_FILES = ["irs/ir1.ogg", "irs/ir2.ogg"];
 
 type Props = {
-  node: AudioBufferSourceNode;
+  node: INode<AudioBufferSourceNode>;
 };
 
 const AudioBufferNode = (props: Props) => {
@@ -19,34 +21,62 @@ const AudioBufferNode = (props: Props) => {
   const [selectedFile, setSelectedFile] = useState(AUDIO_FILES[0]);
   const inputFileRef = useRef<HTMLInputElement | null>(null);
 
-  useEffect(() => {
-    const fetchIR = async () => {
-      let response = await fetch(AUDIO_FILES[0]);
-      let arraybuffer = await response.arrayBuffer();
-      node.buffer = await node.context.decodeAudioData(arraybuffer);
-    };
+  const remakeConnectionsWithNode = useStore(
+    (state) => state.remakeConnectionsWithNode
+  );
 
-    fetchIR();
-  }, [node]);
+  // useEffect(() => {
+  //   const fetchIR = async () => {
+  //     console.log("FETCHING");
+  //     let response = await fetch(AUDIO_FILES[0]);
+  //     let arraybuffer = await response.arrayBuffer();
+  //     node.audioNode.buffer = await node.audioNode.context.decodeAudioData(
+  //       arraybuffer
+  //     );
+  //   };
+
+  //   if (!node.audioNode.buffer) fetchIR();
+  // }, []);
 
   const handleDetuneChange = (val: number): void => {
-    node.detune.value = val;
+    node.audioNode.detune.value = val;
   };
 
   const handleFileChange = async (f: string) => {
+    // need to create a new node on file change
+    // node.audioNode.stop();
+    setIsPlaying(false);
+
+    const newBuff = node.audioNode.context.createBufferSource();
+    newBuff.detune.value = node.audioNode.detune.value;
+    // newBuff.buffer = node.audioNode.buffer;
+
+    node.audioNode = newBuff;
+    remakeConnectionsWithNode(node);
+
     // what
     let response = await fetch(f);
     let arraybuffer = await response.arrayBuffer();
-    node.buffer = await node.context.decodeAudioData(arraybuffer);
+    node.audioNode.buffer = await node.audioNode.context.decodeAudioData(
+      arraybuffer
+    );
 
     setSelectedFile(f);
   };
 
   const handlePlayToggle = () => {
     if (isPlaying) {
-      node.stop();
+      node.audioNode.stop();
+
+      const newBuff = node.audioNode.context.createBufferSource();
+      newBuff.detune.value = node.audioNode.detune.value;
+      newBuff.buffer = node.audioNode.buffer;
+
+      node.audioNode = newBuff;
+
+      remakeConnectionsWithNode(node);
     } else {
-      node.start();
+      node.audioNode.start();
     }
 
     setIsPlaying(!isPlaying);
@@ -81,9 +111,11 @@ const AudioBufferNode = (props: Props) => {
         console.log("AHH", arraybuffer);
       } else {
         console.log("loading audio data...");
-        node.buffer = await node.context.decodeAudioData(arraybuffer);
+        node.audioNode.buffer = await node.audioNode.context.decodeAudioData(
+          arraybuffer
+        );
 
-        console.log("node.buffer", node.buffer);
+        console.log("node.audioNode.buffer", node.audioNode.buffer);
 
         setSelectedFile(file.name);
       }
@@ -94,7 +126,7 @@ const AudioBufferNode = (props: Props) => {
     <>
       <ParamSlider
         title="Detune"
-        audioParam={node.detune}
+        audioParam={node.audioNode.detune}
         handleChange={handleDetuneChange}
         limits={[-1200, 1200]}
         unit="cents"
@@ -107,7 +139,10 @@ const AudioBufferNode = (props: Props) => {
       <SelectionDropdown title={selectedFile}>
         {AUDIO_FILES.map((f, i) => {
           return (
-            <SelectionDropdownItem handleClick={(e) => handleFileChange(f)}>
+            <SelectionDropdownItem
+              key={i}
+              handleClick={(e) => handleFileChange(f)}
+            >
               <span>{f}</span>
             </SelectionDropdownItem>
           );

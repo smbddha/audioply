@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from "react";
 
+import { INode } from "@/types";
+
 type Props = {
-  node: AnalyserNode;
+  node: INode<AnalyserNode>;
 };
 
 // enum AnalyserTypes {
@@ -21,11 +23,11 @@ const AnalyserNode = (props: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const draw = () => {
-    node.fftSize = 2048;
-    const bufferLength = node.frequencyBinCount;
+    node.audioNode.fftSize = 2048;
+    const bufferLength = node.audioNode.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
 
-    node.getByteTimeDomainData(dataArray);
+    node.audioNode.getByteTimeDomainData(dataArray);
 
     if (!canvasRef.current) return;
 

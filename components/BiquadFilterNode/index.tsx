@@ -3,9 +3,10 @@ import React, { useState } from "react";
 import ParamSlider from "@/uicomponents/paramslider";
 import SelectionDropdown from "@/uicomponents/SelectionDropdown";
 import SelectionDropdownItem from "@/uicomponents/SelectionDropdown/item";
+import { INode } from "@/types";
 
 type Props = {
-  node: BiquadFilterNode;
+  node: INode<BiquadFilterNode>;
 };
 
 const biquadFilterTypes: BiquadFilterType[] = [
@@ -22,27 +23,27 @@ const biquadFilterTypes: BiquadFilterType[] = [
 const BiquadFilterNode = (props: Props) => {
   const { node } = props;
 
-  const [filterType, setFilterType] = useState(node.type);
+  const [filterType, setFilterType] = useState(node.audioNode.type);
 
   const handleFreqChange = (val: number): void => {
-    node.frequency.value = val;
+    node.audioNode.frequency.value = val;
   };
 
   const handleDetuneChange = (val: number): void => {
-    node.detune.value = val;
+    node.audioNode.detune.value = val;
   };
 
   const handleQChange = (val: number): void => {
-    node.Q.value = val;
+    node.audioNode.Q.value = val;
   };
 
   const handleGainChange = (val: number): void => {
-    node.frequency.value = val;
+    node.audioNode.frequency.value = val;
   };
 
   const handleTypeChange = (newType: BiquadFilterType): void => {
     setFilterType(newType);
-    node.type = newType;
+    node.audioNode.type = newType;
   };
 
   console.log("HERE");
@@ -50,27 +51,27 @@ const BiquadFilterNode = (props: Props) => {
     <>
       <ParamSlider
         title="Freq"
-        audioParam={node.frequency}
+        audioParam={node.audioNode.frequency}
         handleChange={handleFreqChange}
         limits={[0, 20000]}
         unit="hz"
       />
       <ParamSlider
         title="Detune"
-        audioParam={node.detune}
+        audioParam={node.audioNode.detune}
         handleChange={handleDetuneChange}
         limits={[-1200, 1200]}
         unit="cents"
       />
       <ParamSlider
         title="Q"
-        audioParam={node.Q}
+        audioParam={node.audioNode.Q}
         handleChange={handleQChange}
         limits={[1, 100]}
       />
       <ParamSlider
         title="Gain"
-        audioParam={node.gain}
+        audioParam={node.audioNode.gain}
         handleChange={handleGainChange}
         limits={[0, 10]}
       />
