@@ -95,6 +95,7 @@ const Node = (props: PropsWithChildren<Props>) => {
             flexDirection: "row",
             borderBottom: "4px solid black",
             justifyContent: "space-between",
+            cursor: "pointer",
           }}
         >
           <span

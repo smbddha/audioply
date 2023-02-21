@@ -20,6 +20,7 @@ import { useStore } from "@/store";
 import { INode, ConnNode, AudioNodeType } from "@/types";
 import SVGLayer from "@/components/svglayer";
 import Header from "@/components/Header";
+import Controls from "@/components/Controls";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -74,12 +75,12 @@ const nodeOptions: Record<
 };
 
 export default function Home() {
-  const [audioCtx, _] = useState<AudioContext | null>(
-    typeof window !== "undefined" ? new AudioContext() : null
-  );
+  // const [audioCtx, _] = useState<AudioContext | null>(
+  //   typeof window !== "undefined" ? new AudioContext() : null
+  // );
 
+  const audioCtx = useStore((state) => state.context);
   const graph = useStore((state) => state.nodes);
-  const connections = useStore((state) => state.connections);
   const addNode = useStore((state) => state.addNode);
   const deleteNode = useStore((state) => state.deleteNode);
   const addConnections = useStore((state) => state.addConnections);
@@ -93,7 +94,7 @@ export default function Home() {
 
   const inputMouseHandler = (
     e: MouseEvent,
-    node: INode,
+    node: INode<AudioNode>,
     inputIndex: number,
     _ref: RefObject<HTMLDivElement>
   ) => {
@@ -112,7 +113,7 @@ export default function Home() {
 
   const outputMouseHandler = (
     e: MouseEvent,
-    node: INode,
+    node: INode<AudioNode>,
     outputIndex: number,
     _ref: RefObject<HTMLDivElement>
   ) => {
@@ -126,7 +127,8 @@ export default function Home() {
       setConnectionEnd(null);
     } else {
       console.log("Unrecognized type ", e.type);
-     };
+    }
+  };
 
   const makeConnection = (start: ConnNode, end: ConnNode): boolean => {
     // const [startNode, startNodeType, _a] = start;
@@ -163,18 +165,18 @@ export default function Home() {
   };
 
   const handleDeleteConnection = (connIdx: number) => {
-    const [start, end] = connections[connIdx];
+    // const [start, end] = connections[connIdx];
 
-    const [startNode, startNodeType, _a] = start;
-    const [endNode, _b, _c] = end;
+    // const [startNode, startNodeType, _a] = start;
+    // const [endNode, _b, _c] = end;
 
-    if (startNodeType === "output") {
-      startNode.audioNode.disconnect(endNode.audioNode);
-    } else {
-      endNode.audioNode.disconnect(startNode.audioNode);
-    }
+    // if (startNodeType === "output") {
+    //   startNode.audioNode.disconnect(endNode.audioNode);
+    // } else {
+    //   endNode.audioNode.disconnect(startNode.audioNode);
+    // }
 
-    // setConnections((prev) => {
+    // // setConnections((prev) => {
     //   return [...prev.slice(0, connIdx), ...prev.slice(connIdx + 1)];
     // });
 
@@ -287,20 +289,10 @@ export default function Home() {
         onMouseUp={handleMouseUp}
       >
         <Header />
-        <Dropdown title={"Add Node"}>
-          {Object.entries(nodeOptions).map(([_, v], i) => {
-            const { f, d, nodeType } = v;
-            return (
-              <button key={i} onClick={() => handleCreateNode(d, nodeType, f)}>
-                {d}
-              </button>
-            );
-          })}
-        </Dropdown>
+        <Controls />
         {renderNodes}
         <SVGLayer
           mouseRef={mouseRef}
-          connections={connections}
           connectionStart={connectionStart && getCoords(connectionStart)}
           deleteConnection={handleDeleteConnection}
         />

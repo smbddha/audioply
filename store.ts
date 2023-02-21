@@ -5,19 +5,20 @@ import { immer } from "zustand/middleware/immer";
 import { ConnNode, INode } from "./types";
 
 interface IStore {
+  context: AudioContext | null;
   nodes: INode<AudioNode>[];
   connections: [ConnNode, ConnNode][];
   addNode: (a: INode<AudioNode>) => void;
   deleteNode: (a: INode<AudioNode>) => void;
   updateNode: (a: Partial<INode>) => void;
   addConnections: (...a: [ConnNode, ConnNode][]) => void;
-  addConnections: (...a: [ConnNode, ConnNode][]) => void;
   deleteConnection: (idx: number) => void;
   filterConnections: (a: (b: [ConnNode, ConnNode]) => boolean) => void;
-  removeConnectionsWithNode: (a: INode) => void;
+  removeConnectionsWithNode: (a: INode<AudioNode>) => void;
   remakeConnectionsWithNode: (a: INode<AudioNode>) => void;
 }
 
+// failed immer test
 // setAutoFreeze(false);
 // export const useStore = create(
 //   immer<IStore>((set, get) => ({
@@ -66,6 +67,9 @@ interface IStore {
 
 export const useStore = create<IStore>((set, get) => ({
   // TODO start with audio destination node
+
+  // dont initialize unless in the browser
+  context: typeof window !== "undefined" ? new AudioContext() : null,
   nodes: [],
   connections: [],
   addNode: (payload: INode<AudioNode>) => {

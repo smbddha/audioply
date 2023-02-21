@@ -21,6 +21,7 @@ export enum AudioNodeType {
   Analyser = "ANALYSER",
   Compressor = "COMPRESSOR",
   AudioBuffer = "AUDIO_BUFFER",
+  AudioOut = "AUDIO_OUT",
 }
 
 export type ConnNode = [INode<AudioNode>, OutputOrInput, number];

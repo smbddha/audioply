@@ -7,6 +7,7 @@ const Header = () => {
         width: "100%",
         margin: "1rem",
         marginTop: "1rem",
+        marginBottom: "4rem",
         borderTop: "4px solid black",
       }}
     >
