@@ -2,17 +2,21 @@ import { useState, useEffect, RefObject, Fragment } from "react";
 
 import { ConnNode, Point } from "@/types";
 import { getCoords } from "@/utils";
+import { useStore } from "@/store";
 
 type Props = {
   mouseRef: RefObject<Point>;
-  connections: [ConnNode, ConnNode][];
+  // connections: [ConnNode, ConnNode][];
   connectionStart: Point | null;
   deleteConnection: (idx: number) => void;
 };
 
 const SVGLayer = (props: Props) => {
-  const { mouseRef, connections, connectionStart, deleteConnection } = props;
+  // const { mouseRef, connections, connectionStart, deleteConnection } = props;
+  const { mouseRef, connectionStart, deleteConnection } = props;
   const [_, setMousePos] = useState({ x: 0, y: 0 });
+
+  const connections = useStore((state) => state.connections);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {

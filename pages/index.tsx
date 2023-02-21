@@ -79,11 +79,14 @@ export default function Home() {
   );
 
   const graph = useStore((state) => state.nodes);
+  const connections = useStore((state) => state.connections);
   const addNode = useStore((state) => state.addNode);
   const deleteNode = useStore((state) => state.deleteNode);
+  const addConnections = useStore((state) => state.addConnections);
+  const deleteConnection = useStore((state) => state.deleteConnection);
 
   // const [graph, setGraph] = useState<INode[]>([]);
-  const [connections, setConnections] = useState<[ConnNode, ConnNode][]>([]);
+  // const [connections, setConnections] = useState<[ConnNode, ConnNode][]>([]);
   const mouseRef = useRef({ x: 0, y: 0 });
   const [connectionStart, setConnectionStart] = useState<ConnNode | null>(null);
   const [connectionEnd, setConnectionEnd] = useState<ConnNode | null>(null);
@@ -138,10 +141,11 @@ export default function Home() {
       endNode.node.connect(startNode.node);
     }
 
-    setConnections((prev) => {
-      return [...prev, [start, end]];
-    });
+    // setConnections((prev) => {
+    //   return [...prev, [start, end]];
+    // });
     // connections.push([start, end]);
+    addConnections([start, end]);
 
     return true;
   };
@@ -171,9 +175,11 @@ export default function Home() {
       endNode.node.disconnect(startNode.node);
     }
 
-    setConnections((prev) => {
-      return [...prev.slice(0, connIdx), ...prev.slice(connIdx + 1)];
-    });
+    // setConnections((prev) => {
+    //   return [...prev.slice(0, connIdx), ...prev.slice(connIdx + 1)];
+    // });
+
+    deleteConnection(connIdx);
   };
 
   const handleDeleteNode = (node: INode) => {
