@@ -244,10 +244,10 @@ export default function Home() {
       Object.keys(node)
     );
 
-    const newNode: INode = {
+    const newNode: INode<AudioNode> = {
       id: "id" + Math.random().toString(16).slice(2),
       name: d,
-      node: node,
+      audioNode: node,
       type: nodeType,
       inputRefs: Array(node.numberOfInputs).fill(createRef<HTMLDivElement>()),
       outputRefs: Array(node.numberOfOutputs).fill(createRef<HTMLDivElement>()),

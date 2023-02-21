@@ -66,7 +66,7 @@ export const useStore = create<IStore>((set, get) => ({
   // TODO start with audio destination node
   nodes: [],
   connections: [],
-  addNode: (payload: INode) => {
+  addNode: (payload: INode<AudioNode>) => {
     set(
       (state) => ({
         ...state,
@@ -77,10 +77,10 @@ export const useStore = create<IStore>((set, get) => ({
       // })
     );
   },
-  deleteNode: (payload: INode) => {
+  deleteNode: (payload: INode<AudioNode>) => {
     set(
       (state) => {
-        let idx = state.nodes.findIndex((el: INode) => el.id === payload.id);
+        let idx = state.nodes.findIndex((el) => el.id === payload.id);
 
         console.log(payload);
 

@@ -14,7 +14,7 @@ const useSlider = (
     if (onChange) onChange(e.target.valueAsNumber);
   };
 
-  const setValue = useCallback(
+  const updateValue = useCallback(
     (v: number) => {
       setSlide(v);
       if (onChange) onChange(v);
@@ -30,9 +30,8 @@ const useSlider = (
     step: max / 1000,
     value: state,
     onChange: handleChange,
-    setValue: setValue,
   };
-  return props;
+  return [props, updateValue];
 };
 
 type Props = {
@@ -50,7 +49,7 @@ const ParamSlider = (props: Props) => {
     audioParam.value.toString()
   );
 
-  const sliderProps = useSlider(
+  const [sliderProps, updateValue] = useSlider(
     limits ? limits[0] : audioParam.minValue,
     limits ? limits[1] : audioParam.maxValue,
     audioParam.defaultValue,
@@ -72,7 +71,7 @@ const ParamSlider = (props: Props) => {
     const v = parseFloat(e.target.value);
     if (v) {
       console.log(v);
-      sliderProps.setValue(v);
+      updateValue(v);
     }
   };
 

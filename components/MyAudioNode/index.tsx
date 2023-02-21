@@ -35,21 +35,21 @@ const MyAudioNode = (props: Props) => {
   const renderNode = () => {
     switch (node.type) {
       case AudioNodeType.Oscillator:
-        return <OscillatorNode node={node.node as OscillatorNode} />;
+        return <OscillatorNode node={node} />;
       case AudioNodeType.Delay:
-        return <DelayNode node={node.node as DelayNode} />;
+        return <DelayNode node={node} />;
       case AudioNodeType.Biquad:
-        return <BiquadFilterNode node={node.node as BiquadFilterNode} />;
+        return <BiquadFilterNode node={node} />;
       case AudioNodeType.Gain:
-        return <GainNode node={node.node as GainNode} />;
+        return <GainNode node={node} />;
       case AudioNodeType.Convolver:
-        return <ConvolverNode node={node.node as ConvolverNode} />;
+        return <ConvolverNode node={node} />;
       case AudioNodeType.Analyser:
-        return <AnalyserNode node={node.node as AnalyserNode} />;
+        return <AnalyserNode node={node} />;
       case AudioNodeType.Compressor:
-        return <CompressorNode node={node.node as DynamicsCompressorNode} />;
+        return <CompressorNode node={node} />;
       case AudioNodeType.AudioBuffer:
-        return <AudioBufferNode node={node.node as AudioBufferSourceNode} />;
+        return <AudioBufferNode node={node} />;
       default:
         return <></>;
     }

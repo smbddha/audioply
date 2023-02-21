@@ -1,10 +1,10 @@
 import { RefObject } from "react";
 
-export type INode = {
+export type INode<T> = {
   id: string;
   name: string;
   type: AudioNodeType;
-  node: AudioNode;
+  audioNode: T;
   inputRefs: RefObject<HTMLDivElement>[];
   outputRefs: RefObject<HTMLDivElement>[];
   // settings: object;
@@ -23,7 +23,7 @@ export enum AudioNodeType {
   AudioBuffer = "AUDIO_BUFFER",
 }
 
-export type ConnNode = [INode, OutputOrInput, number];
+export type ConnNode = [INode<AudioNode>, OutputOrInput, number];
 
 export type OutputOrInput = "output" | "input";
 

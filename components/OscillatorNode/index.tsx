@@ -4,9 +4,10 @@ import ParamSlider from "@/uicomponents/paramslider";
 import SelectionDropdown from "@/uicomponents/SelectionDropdown";
 import SelectionDropdownItem from "@/uicomponents/SelectionDropdown/item";
 import Button from "@/uicomponents/button";
+import { INode } from "@/types";
 
 type Props = {
-  node: OscillatorNode;
+  node: INode<OscillatorNode>;
 };
 
 const oscillatorTypes: OscillatorType[] = [
@@ -21,26 +22,34 @@ const OscillatorNode = (props: Props) => {
   const { node } = props;
 
   const [isPlaying, setIsPlaying] = useState(false);
-  const [oscType, setOscType] = useState(node.type);
+  const [oscType, setOscType] = useState(node.audioNode.type);
 
   const handleFreqChange = (val: number): void => {
-    node.frequency.value = val;
+    node.audioNode.frequency.value = val;
   };
 
   const handleDetuneChange = (val: number): void => {
-    node.detune.value = val;
+    node.audioNode.detune.value = val;
   };
 
   const handleOscTypeChange = (newType: OscillatorType): void => {
-    node.type = newType;
+    node.audioNode.type = newType;
     setOscType(newType);
   };
 
   const handlePlayToggle = () => {
     if (isPlaying) {
-      node.stop();
+      node.audioNode.stop();
+
+      // TODO create new audioOsc
+      const newOsc = node.audioNode.context.createOscillator();
+      newOsc.frequency.value = node.audioNode.frequency.value;
+      newOsc.detune.value = node.audioNode.detune.value;
+      newOsc.type = node.audioNode.type;
+
+      // updateOsc()
     } else {
-      node.start();
+      node.audioNode.start();
     }
 
     setIsPlaying(!isPlaying);
@@ -50,14 +59,14 @@ const OscillatorNode = (props: Props) => {
     <>
       <ParamSlider
         title="Freq"
-        audioParam={node.frequency}
+        audioParam={node.audioNode.frequency}
         handleChange={handleFreqChange}
         limits={[0, 20000]}
         unit="hz"
       />
       <ParamSlider
         title="Detune"
-        audioParam={node.detune}
+        audioParam={node.audioNode.detune}
         handleChange={handleDetuneChange}
         limits={[-1200, 1200]}
         unit="cents"
