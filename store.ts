@@ -6,17 +6,17 @@ import { nodeOptions, createNode } from "@/utils";
 
 interface IStore {
   context: AudioContext | null;
-  nodes: INode<AudioNode>[];
+  nodes: INode[];
   connections: [ConnNode, ConnNode][];
-  addNode: (a: INode<AudioNode>) => void;
+  addNode: (a: INode) => void;
   reset: () => void;
-  deleteNode: (a: INode<AudioNode>) => void;
-  // updateNode: (a: Partial<INode<AudioNode>>) => void;
+  deleteNode: (a: INode) => void;
+  // updateNode: (a: Partial<INode>) => void;
   addConnections: (...a: [ConnNode, ConnNode][]) => void;
   deleteConnection: (idx: number) => void;
   filterConnections: (a: (b: [ConnNode, ConnNode]) => boolean) => void;
-  removeConnectionsWithNode: (a: INode<AudioNode>) => void;
-  remakeConnectionsWithNode: (a: INode<AudioNode>) => void;
+  removeConnectionsWithNode: (a: INode) => void;
+  remakeConnectionsWithNode: (a: INode) => void;
 }
 
 // failed immer test
@@ -73,7 +73,7 @@ export const useStore = create<IStore>((set, get) => ({
   context: typeof window !== "undefined" ? new AudioContext() : null,
   nodes: [],
   connections: [],
-  addNode: (payload: INode<AudioNode>) => {
+  addNode: (payload: INode) => {
     set((state) => ({
       ...state,
       nodes: [...state.nodes, payload],
@@ -87,7 +87,7 @@ export const useStore = create<IStore>((set, get) => ({
       connections: [],
     }));
   },
-  deleteNode: (payload: INode<AudioNode>) => {
+  deleteNode: (payload: INode) => {
     set((state) => {
       let idx = state.nodes.findIndex((el) => el.id === payload.id);
 
@@ -129,12 +129,12 @@ export const useStore = create<IStore>((set, get) => ({
       };
     });
   },
-  removeConnectionsWithNode: (node: INode<AudioNode>) => {
+  removeConnectionsWithNode: (node: INode) => {
     get().filterConnections(
       ([start, end]) => !(start[0].id === node.id || end[0].id === node.id)
     );
   },
-  remakeConnectionsWithNode: (node: INode<AudioNode>) => {
+  remakeConnectionsWithNode: (node: INode) => {
     set((state) => {
       state.connections.map(([start, end]) => {
         if (!(start[0].id === node.id || end[0].id === node.id)) return;

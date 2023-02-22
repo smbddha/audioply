@@ -24,46 +24,46 @@ const WaveshaperNode = (props: Props) => {
   const requestRef = useRef<number | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const draw = () => {
-    node.audioNode.fftSize = 2048;
-    const bufferLength = node.audioNode.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
+  // const draw = () => {
+  //   node.audioNode.fftSize = 2048;
+  //   const bufferLength = node.audioNode.frequencyBinCount;
+  //   const dataArray = new Uint8Array(bufferLength);
 
-    node.audioNode.getByteTimeDomainData(dataArray);
+  //   node.audioNode.getByteTimeDomainData(dataArray);
 
-    if (!canvasRef.current) return;
+  //   if (!canvasRef.current) return;
 
-    const canvasCtx = canvasRef.current.getContext("2d");
-    if (!canvasCtx) return;
+  //   const canvasCtx = canvasRef.current.getContext("2d");
+  //   if (!canvasCtx) return;
 
-    canvasCtx.fillStyle = "rgb(200, 200, 200)";
-    canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
-    canvasCtx.lineWidth = 2;
-    canvasCtx.strokeStyle = "rgb(0, 0, 0)";
-    canvasCtx.beginPath();
-    const sliceWidth = WIDTH / bufferLength;
-    let x = 0;
+  //   canvasCtx.fillStyle = "rgb(200, 200, 200)";
+  //   canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+  //   canvasCtx.lineWidth = 2;
+  //   canvasCtx.strokeStyle = "rgb(0, 0, 0)";
+  //   canvasCtx.beginPath();
+  //   const sliceWidth = WIDTH / bufferLength;
+  //   let x = 0;
 
-    for (let i = 0; i < bufferLength; i++) {
-      const v = dataArray[i] / 128.0;
-      const y = v * (HEIGHT / 2);
+  //   for (let i = 0; i < bufferLength; i++) {
+  //     const v = dataArray[i] / 128.0;
+  //     const y = v * (HEIGHT / 2);
 
-      if (i === 0) {
-        canvasCtx.moveTo(x, y);
-      } else {
-        canvasCtx.lineTo(x, y);
-      }
+  //     if (i === 0) {
+  //       canvasCtx.moveTo(x, y);
+  //     } else {
+  //       canvasCtx.lineTo(x, y);
+  //     }
 
-      x += sliceWidth;
-    }
-    canvasCtx.lineTo(WIDTH, HEIGHT / 2);
-    canvasCtx.stroke();
-  };
+  //     x += sliceWidth;
+  //   }
+  //   canvasCtx.lineTo(WIDTH, HEIGHT / 2);
+  //   canvasCtx.stroke();
+  // };
 
-  const animate = () => {
-    draw();
-    requestRef.current = requestAnimationFrame(animate);
-  };
+  // const animate = () => {
+  //   draw();
+  //   requestRef.current = requestAnimationFrame(animate);
+  // };
 
   return (
     <>

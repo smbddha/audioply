@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, ChangeEvent } from "react";
+import React, { useState, useRef, ChangeEvent, MouseEvent } from "react";
 
 import ParamSlider from "@/uicomponents/paramslider";
 import SelectionDropdown from "@/uicomponents/SelectionDropdown";

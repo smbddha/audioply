@@ -6,7 +6,18 @@ const useSlider = (
   defaultState: number,
   id: string,
   onChange?: (val: number) => void
-) => {
+): [
+  props: {
+    type: string;
+    id: string;
+    min: number;
+    max: number;
+    step: number;
+    value: number;
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  },
+  updateValue: (v: number) => void
+] => {
   const [state, setSlide] = useState(defaultState);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSlide(e.target.valueAsNumber);
@@ -70,7 +81,6 @@ const ParamSlider = (props: Props) => {
     setTextValue(e.target.value);
     const v = parseFloat(e.target.value);
     if (v) {
-      console.log(v);
       updateValue(v);
     }
   };

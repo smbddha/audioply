@@ -46,7 +46,7 @@ const Dropdown = ({ title, children }: Props) => {
       </div>
       {isShowing && children ? (
         <div>
-          {children.map((child, i) => {
+          {/*children.map((child, i) => {
             return (
               <div
                 style={{
@@ -58,7 +58,7 @@ const Dropdown = ({ title, children }: Props) => {
                 {child}
               </div>
             );
-          })}
+          })*/}
         </div>
       ) : null}
     </div>

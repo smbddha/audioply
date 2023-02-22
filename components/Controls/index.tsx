@@ -25,7 +25,7 @@ const Controls = (_: Props) => {
     if (!audioCtx) return;
     // const node = f(audioCtx);
 
-    // const newNode: INode<AudioNode> = {
+    // const newNode: INode = {
     //   id: "id" + Math.random().toString(16).slice(2),
     //   name: d,
     //   audioNode: node,

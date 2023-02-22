@@ -14,20 +14,20 @@ import Node from "@/uicomponents/node";
 import { AudioNodeType, INode } from "@/types";
 
 type Props = {
-  node: INode<AudioNode>;
+  node: INode;
   inputMouseHandler: (
     a: MouseEvent,
-    b: INode<AudioNode>,
+    b: INode,
     c: number,
     d: RefObject<HTMLDivElement>
   ) => void;
   outputMouseHandler: (
     a: MouseEvent,
-    b: INode<AudioNode>,
+    b: INode,
     c: number,
     d: RefObject<HTMLDivElement>
   ) => void;
-  deleteNode: (a: INode<AudioNode>) => void;
+  deleteNode: (a: INode) => void;
 };
 
 const MyAudioNode = (props: Props) => {

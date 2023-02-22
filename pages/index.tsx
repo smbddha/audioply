@@ -40,7 +40,7 @@ export default function Home() {
   const inputMouseHandler = useCallback(
     (
       e: MouseEvent,
-      node: INode<AudioNode>,
+      node: INode,
       inputIndex: number,
       _ref: RefObject<HTMLDivElement>
     ) => {
@@ -62,7 +62,7 @@ export default function Home() {
   const outputMouseHandler = useCallback(
     (
       e: MouseEvent,
-      node: INode<AudioNode>,
+      node: INode,
       outputIndex: number,
       _ref: RefObject<HTMLDivElement>
     ) => {
@@ -103,7 +103,7 @@ export default function Home() {
     deleteConnection(connIdx);
   };
 
-  const handleDeleteNode = useCallback((node: INode<AudioNode>) => {
+  const handleDeleteNode = useCallback((node: INode) => {
     deleteNode(node);
   }, []);
 
@@ -137,7 +137,7 @@ export default function Home() {
   //   if (!audioCtx) return;
   //   const node = f(audioCtx);
 
-  //   const newNode: INode<AudioNode> = {
+  //   const newNode: INode = {
   //     id: "id" + Math.random().toString(16).slice(2),
   //     name: d,
   //     audioNode: node,

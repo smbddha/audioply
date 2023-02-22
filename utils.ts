@@ -104,5 +104,5 @@ export const createNode = (
     type: nodeType,
     inputRefs: Array(node.numberOfInputs).fill(createRef<HTMLDivElement>()),
     outputRefs: Array(node.numberOfOutputs).fill(createRef<HTMLDivElement>()),
-  } as INode<AudioNode>;
+  } as INode;
 };

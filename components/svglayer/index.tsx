@@ -42,7 +42,7 @@ const SVGLayer = (props: Props) => {
     };
   };
 
-  const handleConnectionClick = (e: MouseEvent, connIdx: number) => {
+  const handleConnectionClick = (e: React.MouseEvent, connIdx: number) => {
     deleteConnection(connIdx);
   };
 
@@ -88,7 +88,7 @@ const SVGLayer = (props: Props) => {
                 {...getConnCoords(conn[0], conn[1])}
                 stroke="black"
                 strokeWidth={3}
-                onClick={(e) => handleConnectionClick(e, i)}
+                onClick={(e: React.MouseEvent) => handleConnectionClick(e, i)}
               />
               <line
                 key={`${i}_overlay`}
@@ -97,7 +97,7 @@ const SVGLayer = (props: Props) => {
                 stroke="red"
                 strokeWidth={10}
                 strokeOpacity={0.0}
-                onClick={(e) => handleConnectionClick(e, i)}
+                onClick={(e: React.MouseEvent) => handleConnectionClick(e, i)}
               />
             </Fragment>
           );
