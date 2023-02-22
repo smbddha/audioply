@@ -1,4 +1,9 @@
-import React, { useState, createRef, PropsWithChildren } from "react";
+import React, {
+  useState,
+  createRef,
+  PropsWithChildren,
+  MouseEvent,
+} from "react";
 
 import { INode, AudioNodeType } from "@/types";
 import { useStore } from "@/store";
@@ -65,6 +70,7 @@ const Controls = (props: Props) => {
 
   const audioCtx = useStore((state) => state.context);
   const addNode = useStore((state) => state.addNode);
+  const reset = useStore((state) => state.reset);
 
   const handleHeadClick = () => {
     console.log("HERE");
@@ -90,11 +96,23 @@ const Controls = (props: Props) => {
     addNode(newNode);
   };
 
+  const handleResetClick = () => {
+    reset();
+  };
+
   const renderNodeOptions = () => {
     if (!isShowing) return null;
 
     return (
-      <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.4rem",
+          position: "absolute",
+          width: "100%",
+        }}
+      >
         {Object.entries(nodeOptions).map(([_, v], i) => {
           const { f, d, nodeType } = v;
           return (
@@ -111,31 +129,57 @@ const Controls = (props: Props) => {
   };
 
   return (
-    <div
-      style={{
-        zIndex: "10000",
-
-        marginLeft: "1rem",
-        textAlign: "center",
-      }}
-    >
+    <>
       <div
         style={{
-          border: "3px solid black",
-          padding: "1rem",
-          cursor: "pointer",
-          minWidth: "14rem",
-          marginBottom: "0.4rem",
-          backgroundColor: "white",
-          fontWeight: "600",
-          fontSize: "1.4rem",
+          zIndex: "10000",
+          marginLeft: "1rem",
+          textAlign: "center",
+          position: "relative",
         }}
-        onClick={handleHeadClick}
       >
-        + create node
+        <div
+          className="mybutton"
+          style={{
+            border: "3px solid black",
+            padding: "1rem",
+            cursor: "pointer",
+            minWidth: "14rem",
+            marginBottom: "0.4rem",
+            fontWeight: "600",
+            fontSize: "1.4rem",
+          }}
+          onClick={handleHeadClick}
+        >
+          + create node
+        </div>
+        {renderNodeOptions()}
       </div>
-      {renderNodeOptions()}
-    </div>
+      <div
+        style={{
+          zIndex: "10000",
+          marginLeft: "1rem",
+          textAlign: "center",
+          position: "relative",
+        }}
+      >
+        <div
+          className="mybutton"
+          style={{
+            border: "3px solid black",
+            padding: "1rem",
+            cursor: "pointer",
+            minWidth: "14rem",
+            marginBottom: "0.4rem",
+            fontWeight: "600",
+            fontSize: "1.4rem",
+          }}
+          onClick={handleResetClick}
+        >
+          reset
+        </div>
+      </div>
+    </>
   );
 };
 
@@ -149,13 +193,13 @@ const ControlButton = (props: PropsWithChildren<ControlButtonProps>) => {
   const { handleClick, children } = props;
   return (
     <div
+      className="mybutton"
       style={{
         border: "3px solid black",
         padding: "1rem",
         paddingTop: "0.4rem",
         paddingBottom: "0.4rem",
         cursor: "pointer",
-        backgroundColor: "white",
       }}
       onClick={handleClick}
     >

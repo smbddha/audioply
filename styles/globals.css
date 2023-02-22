@@ -106,6 +106,13 @@ a {
   }
 }
 
+.mybutton {
+    background-color: white;
+}
+
+.mybutton:hover {
+    background-color: #D9D9D9;
+}
 
 input[type=range]::-webkit-slider-runnable-track {
   width: 100%;

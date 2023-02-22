@@ -9,8 +9,9 @@ interface IStore {
   nodes: INode<AudioNode>[];
   connections: [ConnNode, ConnNode][];
   addNode: (a: INode<AudioNode>) => void;
+  reset: () => void;
   deleteNode: (a: INode<AudioNode>) => void;
-  updateNode: (a: Partial<INode>) => void;
+  updateNode: (a: Partial<INode<AudioNode>>) => void;
   addConnections: (...a: [ConnNode, ConnNode][]) => void;
   deleteConnection: (idx: number) => void;
   filterConnections: (a: (b: [ConnNode, ConnNode]) => boolean) => void;
@@ -83,33 +84,29 @@ export const useStore = create<IStore>((set, get) => ({
       // })
     );
   },
+  reset: () => {
+    get().filterConnections(() => false);
+    set((state) => ({
+      ...state,
+      nodes: [],
+      connections: [],
+    }));
+  },
   deleteNode: (payload: INode<AudioNode>) => {
-    set(
-      (state) => {
-        let idx = state.nodes.findIndex((el) => el.id === payload.id);
+    set((state) => {
+      let idx = state.nodes.findIndex((el) => el.id === payload.id);
 
-        console.log(payload);
+      console.log(payload);
 
-        return {
-          ...state,
-          // connections: state.connections.filter(
-          //   ([start, end]) =>
-          //     !(start[0].id === payload.id || end[0].id === payload.id)
-          // ),
-          nodes: [...state.nodes.slice(0, idx), ...state.nodes.slice(idx + 1)],
-        };
-      }
-      // produce((draft) => {
-      //   console.log(draft, payload);
-      //   payload.node.disconnect();
-      //   let idx = draft.nodes.findIndex((el: INode) => el.id === payload.id);
-      //   draft.nodes.splice(idx, 1);
-      // })
-    );
-    // get().filterConnections(
-    //   ([start, end]) =>
-    //     !(start[0].id === payload.id || end[0].id === payload.id)
-    // );
+      return {
+        ...state,
+        // connections: state.connections.filter(
+        //   ([start, end]) =>
+        //     !(start[0].id === payload.id || end[0].id === payload.id)
+        // ),
+        nodes: [...state.nodes.slice(0, idx), ...state.nodes.slice(idx + 1)],
+      };
+    });
     get().removeConnectionsWithNode(payload);
   },
   updateNode: (payload: Partial<INode>) => {

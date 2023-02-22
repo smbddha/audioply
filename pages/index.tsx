@@ -12,7 +12,6 @@ import React from "react";
 
 import { getCoords } from "@/utils";
 import styles from "@/styles/Home.module.css";
-import Dropdown from "@/components/dropdown";
 import MyAudioNode from "@/components/MyAudioNode";
 
 import { useStore } from "@/store";
@@ -21,64 +20,11 @@ import { INode, ConnNode, AudioNodeType } from "@/types";
 import SVGLayer from "@/components/svglayer";
 import Header from "@/components/Header";
 import Controls from "@/components/Controls";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const nodeOptions: Record<
-  string,
-  {
-    f: (ctx: AudioContext) => AudioNode;
-    d: string;
-    nodeType: AudioNodeType;
-  }
-> = {
-  analyserNode: {
-    f: (ctx) => ctx.createAnalyser(),
-    d: "analyser",
-    nodeType: AudioNodeType.Analyser,
-  },
-  delayNode: {
-    f: (ctx) => ctx.createDelay(),
-    d: "delay",
-    nodeType: AudioNodeType.Delay,
-  },
-  convolverNode: {
-    f: (ctx) => ctx.createConvolver(),
-    d: "convolver",
-    nodeType: AudioNodeType.Convolver,
-  },
-  biquadFilter: {
-    f: (ctx) => ctx.createBiquadFilter(),
-    d: "biquad filter",
-    nodeType: AudioNodeType.Biquad,
-  },
-  gainNode: {
-    f: (ctx) => ctx.createGain(),
-    d: "gain",
-    nodeType: AudioNodeType.Gain,
-  },
-  oscillatorNode: {
-    f: (ctx) => ctx.createOscillator(),
-    d: "oscillator",
-    nodeType: AudioNodeType.Oscillator,
-  },
-  compressorNode: {
-    f: (ctx) => ctx.createDynamicsCompressor(),
-    d: "dynamics compressor",
-    nodeType: AudioNodeType.Compressor,
-  },
-  audioBufferNode: {
-    f: (ctx) => ctx.createBufferSource(),
-    d: "audio buffer source",
-    nodeType: AudioNodeType.AudioBuffer,
-  },
-};
-
 export default function Home() {
-  // const [audioCtx, _] = useState<AudioContext | null>(
-  //   typeof window !== "undefined" ? new AudioContext() : null
-  // );
-
   const audioCtx = useStore((state) => state.context);
   const graph = useStore((state) => state.nodes);
   const addNode = useStore((state) => state.addNode);
@@ -86,8 +32,6 @@ export default function Home() {
   const addConnections = useStore((state) => state.addConnections);
   const deleteConnection = useStore((state) => state.deleteConnection);
 
-  // const [graph, setGraph] = useState<INode[]>([]);
-  // const [connections, setConnections] = useState<[ConnNode, ConnNode][]>([]);
   const mouseRef = useRef({ x: 0, y: 0 });
   const [connectionStart, setConnectionStart] = useState<ConnNode | null>(null);
   const [connectionEnd, setConnectionEnd] = useState<ConnNode | null>(null);
@@ -131,23 +75,7 @@ export default function Home() {
   };
 
   const makeConnection = (start: ConnNode, end: ConnNode): boolean => {
-    // const [startNode, startNodeType, _a] = start;
-    // const [endNode, endNodeType, _b] = end;
-
-    // if (startNodeType === endNodeType) return false;
-
-    // if (startNodeType === "output") {
-    //   startNode.audioNode.connect(endNode.audioNode);
-    // } else {
-    //   endNode.audioNode.connect(startNode.node);
-    // }
-
-    // setConnections((prev) => {
-    //   return [...prev, [start, end]];
-    // });
-    // connections.push([start, end]);
     addConnections([start, end]);
-
     return true;
   };
 
@@ -165,44 +93,10 @@ export default function Home() {
   };
 
   const handleDeleteConnection = (connIdx: number) => {
-    // const [start, end] = connections[connIdx];
-
-    // const [startNode, startNodeType, _a] = start;
-    // const [endNode, _b, _c] = end;
-
-    // if (startNodeType === "output") {
-    //   startNode.audioNode.disconnect(endNode.audioNode);
-    // } else {
-    //   endNode.audioNode.disconnect(startNode.audioNode);
-    // }
-
-    // // setConnections((prev) => {
-    //   return [...prev.slice(0, connIdx), ...prev.slice(connIdx + 1)];
-    // });
-
     deleteConnection(connIdx);
   };
 
   const handleDeleteNode = (node: INode<AudioNode>) => {
-    // setGraph((prev) => {
-    //   return prev.filter((n) => n.id !== node.id);
-    // });
-
-    // graph.map((n) => {
-    //   if (n.id === node.id) {
-    //     n.audioNode.disconnect();
-    //   }
-
-    //   if (n.id === node.id) {
-    //     n.audioNode.disconnect();
-    //   }
-    // });
-
-    // setConnections((prev) => {
-    //   return prev.filter(([start, end]) => {
-    //     return !(start[0].id === node.id || end[0].id === node.id);
-    //   });
-    // });
     deleteNode(node);
   };
 
@@ -228,52 +122,25 @@ export default function Home() {
     mouseRef.current = { x: e.clientX, y: e.clientY };
   };
 
-  const handleCreateNode = (
-    d: string,
-    nodeType: AudioNodeType,
-    f: (ctx: AudioContext) => AudioNode
-  ) => {
-    if (!audioCtx) return;
-    const node = f(audioCtx);
+  // const handleCreateNode = (
+  //   d: string,
+  //   nodeType: AudioNodeType,
+  //   f: (ctx: AudioContext) => AudioNode
+  // ) => {
+  //   if (!audioCtx) return;
+  //   const node = f(audioCtx);
 
-    console.log(
-      "CREATING:",
-      nodeType,
-      d,
-      node,
-      node.constructor.name,
-      Object.keys(node)
-    );
+  //   const newNode: INode<AudioNode> = {
+  //     id: "id" + Math.random().toString(16).slice(2),
+  //     name: d,
+  //     audioNode: node,
+  //     type: nodeType,
+  //     inputRefs: Array(node.numberOfInputs).fill(createRef<HTMLDivElement>()),
+  //     outputRefs: Array(node.numberOfOutputs).fill(createRef<HTMLDivElement>()),
+  //   };
 
-    const newNode: INode<AudioNode> = {
-      id: "id" + Math.random().toString(16).slice(2),
-      name: d,
-      audioNode: node,
-      type: nodeType,
-      inputRefs: Array(node.numberOfInputs).fill(createRef<HTMLDivElement>()),
-      outputRefs: Array(node.numberOfOutputs).fill(createRef<HTMLDivElement>()),
-    };
-
-    // setGraph((g) => {
-    //   return [
-    //     ...g,
-    //     {
-    //       id: "id" + Math.random().toString(16).slice(2),
-    //       name: d,
-    //       node: node,
-    //       type: nodeType,
-    //       inputRefs: Array(node.numberOfInputs).fill(
-    //         createRef<HTMLDivElement>()
-    //       ),
-    //       outputRefs: Array(node.numberOfOutputs).fill(
-    //         createRef<HTMLDivElement>()
-    //       ),
-    //     },
-    //   ];
-    // });
-
-    addNode(newNode);
-  };
+  //   addNode(newNode);
+  // };
 
   return (
     <>
@@ -289,13 +156,13 @@ export default function Home() {
         onMouseUp={handleMouseUp}
       >
         <Header />
-        <Controls />
         {renderNodes}
         <SVGLayer
           mouseRef={mouseRef}
           connectionStart={connectionStart && getCoords(connectionStart)}
           deleteConnection={handleDeleteConnection}
         />
+        <Footer />
       </main>
     </>
   );

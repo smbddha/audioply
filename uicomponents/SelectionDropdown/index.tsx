@@ -49,7 +49,22 @@ const SelectionDropdown = (props: PropsWithChildren<Props>) => {
           })
         : null*/}
       {isShowing && children ? (
-        <div onClick={handleChildClick}>{children}</div>
+        <div
+          style={
+            {
+              // zIndex: "12000",
+              // position: "absolute",
+              // width: "100%",
+              // border: "4px solid black",
+              // display: "flex",
+              // flexDirection: "column",
+              // backgroundColor: "white",
+            }
+          }
+          onClick={handleChildClick}
+        >
+          {children}
+        </div>
       ) : null}
     </div>
   );
