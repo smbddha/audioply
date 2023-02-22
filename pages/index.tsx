@@ -7,6 +7,7 @@ import {
   useRef,
   createRef,
   useMemo,
+  useCallback,
 } from "react";
 import React from "react";
 
@@ -36,43 +37,49 @@ export default function Home() {
   const [connectionStart, setConnectionStart] = useState<ConnNode | null>(null);
   const [connectionEnd, setConnectionEnd] = useState<ConnNode | null>(null);
 
-  const inputMouseHandler = (
-    e: MouseEvent,
-    node: INode<AudioNode>,
-    inputIndex: number,
-    _ref: RefObject<HTMLDivElement>
-  ) => {
-    e.preventDefault();
-    if (e.type === "mousedown") {
-      setConnectionStart([node, "input", inputIndex]);
-    } else if (e.type === "mouseenter") {
-      setConnectionEnd([node, "input", inputIndex]);
-      // setHoveredOutput([node, outputIndex]);
-    } else if (e.type === "mouseleave") {
-      setConnectionEnd(null);
-    } else {
-      console.log("Unrecognized type ", e.type);
-    }
-  };
+  const inputMouseHandler = useCallback(
+    (
+      e: MouseEvent,
+      node: INode<AudioNode>,
+      inputIndex: number,
+      _ref: RefObject<HTMLDivElement>
+    ) => {
+      e.preventDefault();
+      if (e.type === "mousedown") {
+        setConnectionStart([node, "input", inputIndex]);
+      } else if (e.type === "mouseenter") {
+        setConnectionEnd([node, "input", inputIndex]);
+        // setHoveredOutput([node, outputIndex]);
+      } else if (e.type === "mouseleave") {
+        setConnectionEnd(null);
+      } else {
+        console.log("Unrecognized type ", e.type);
+      }
+    },
+    []
+  );
 
-  const outputMouseHandler = (
-    e: MouseEvent,
-    node: INode<AudioNode>,
-    outputIndex: number,
-    _ref: RefObject<HTMLDivElement>
-  ) => {
-    e.preventDefault();
-    if (e.type === "mousedown") {
-      setConnectionStart([node, "output", outputIndex]);
-    } else if (e.type === "mouseenter") {
-      setConnectionEnd([node, "output", outputIndex]);
-      // setHoveredOutput([node, outputIndex]);
-    } else if (e.type === "mouseleave") {
-      setConnectionEnd(null);
-    } else {
-      console.log("Unrecognized type ", e.type);
-    }
-  };
+  const outputMouseHandler = useCallback(
+    (
+      e: MouseEvent,
+      node: INode<AudioNode>,
+      outputIndex: number,
+      _ref: RefObject<HTMLDivElement>
+    ) => {
+      e.preventDefault();
+      if (e.type === "mousedown") {
+        setConnectionStart([node, "output", outputIndex]);
+      } else if (e.type === "mouseenter") {
+        setConnectionEnd([node, "output", outputIndex]);
+        // setHoveredOutput([node, outputIndex]);
+      } else if (e.type === "mouseleave") {
+        setConnectionEnd(null);
+      } else {
+        console.log("Unrecognized type ", e.type);
+      }
+    },
+    []
+  );
 
   const makeConnection = (start: ConnNode, end: ConnNode): boolean => {
     addConnections([start, end]);
@@ -96,9 +103,9 @@ export default function Home() {
     deleteConnection(connIdx);
   };
 
-  const handleDeleteNode = (node: INode<AudioNode>) => {
+  const handleDeleteNode = useCallback((node: INode<AudioNode>) => {
     deleteNode(node);
-  };
+  }, []);
 
   const renderNodes = useMemo(() => {
     return (
@@ -116,7 +123,7 @@ export default function Home() {
         })}
       </>
     );
-  }, [graph]);
+  }, [graph, inputMouseHandler, outputMouseHandler, handleDeleteNode]);
 
   const handleMouseMove = (e: MouseEvent) => {
     mouseRef.current = { x: e.clientX, y: e.clientY };

@@ -48,7 +48,7 @@ const MyAudioNode = (props: Props) => {
       case AudioNodeType.Analyser:
         return <AnalyserNode node={node as INode<AnalyserNode>} />;
       case AudioNodeType.Compressor:
-        return <CompressorNode node={node as INode<DynamicCompressorNode>} />;
+        return <CompressorNode node={node as INode<DynamicsCompressorNode>} />;
       case AudioNodeType.AudioBuffer:
         return <AudioBufferNode node={node as INode<AudioBufferSourceNode>} />;
       case AudioNodeType.AudioOut:

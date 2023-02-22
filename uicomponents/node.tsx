@@ -64,13 +64,15 @@ const Node = (props: PropsWithChildren<Props>) => {
   const nodeRef = useRef(null);
 
   const handleDelete = () => {
-    //TODO remove connections	 to and from this node
     deleteNode(node);
   };
 
   return (
     <Draggable
-      defaultPosition={{ x: 50, y: 50 }}
+      defaultPosition={{
+        x: window.innerHeight / 2 - 60,
+        y: window.innerWidth / 2 - 60,
+      }}
       nodeRef={nodeRef}
       handle=".handle"
     >

@@ -1,8 +1,8 @@
-import { setAutoFreeze } from "immer";
 import { create } from "zustand";
 // import produce from "immer";
-import { immer } from "zustand/middleware/immer";
+// import { immer } from "zustand/middleware/immer";
 import { ConnNode, INode } from "./types";
+import { nodeOptions, createNode } from "@/utils";
 
 interface IStore {
   context: AudioContext | null;
@@ -11,7 +11,7 @@ interface IStore {
   addNode: (a: INode<AudioNode>) => void;
   reset: () => void;
   deleteNode: (a: INode<AudioNode>) => void;
-  updateNode: (a: Partial<INode<AudioNode>>) => void;
+  // updateNode: (a: Partial<INode<AudioNode>>) => void;
   addConnections: (...a: [ConnNode, ConnNode][]) => void;
   deleteConnection: (idx: number) => void;
   filterConnections: (a: (b: [ConnNode, ConnNode]) => boolean) => void;
@@ -74,15 +74,10 @@ export const useStore = create<IStore>((set, get) => ({
   nodes: [],
   connections: [],
   addNode: (payload: INode<AudioNode>) => {
-    set(
-      (state) => ({
-        ...state,
-        nodes: [...state.nodes, payload],
-      })
-      // produce((draft) => {
-      //   draft.nodes.push(payload);
-      // })
-    );
+    set((state) => ({
+      ...state,
+      nodes: [...state.nodes, payload],
+    }));
   },
   reset: () => {
     get().filterConnections(() => false);
@@ -100,23 +95,19 @@ export const useStore = create<IStore>((set, get) => ({
 
       return {
         ...state,
-        // connections: state.connections.filter(
-        //   ([start, end]) =>
-        //     !(start[0].id === payload.id || end[0].id === payload.id)
-        // ),
         nodes: [...state.nodes.slice(0, idx), ...state.nodes.slice(idx + 1)],
       };
     });
     get().removeConnectionsWithNode(payload);
   },
-  updateNode: (payload: Partial<INode>) => {
-    set((state) => {
-      return {
-        ...state,
-        nodes: kj,
-      };
-    });
-  },
+  // updateNode: (payload: Partial<INode>) => {
+  //   set((state) => {
+  //     return {
+  //       ...state,
+  //       nodes: kj,
+  //     };
+  //   });
+  // },
   addConnections: (...newConnections: [ConnNode, ConnNode][]) => {
     set((state) => {
       newConnections.map(([start, end]) => {
@@ -163,7 +154,6 @@ export const useStore = create<IStore>((set, get) => ({
     });
   },
   filterConnections: (pred: (a: [ConnNode, ConnNode]) => boolean) => {
-    console.log("FILTERING");
     set((state) => {
       state.connections.map(([start, end]) => {
         if (pred([start, end])) return;

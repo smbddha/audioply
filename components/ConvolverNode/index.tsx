@@ -5,6 +5,7 @@ import React, {
   ChangeEvent,
   MouseEvent,
 } from "react";
+import styles from "./ConvolverNode.module.css";
 
 // import ParamSlider from "@/uicomponents/paramslider";
 import SelectionDropdown from "@/uicomponents/SelectionDropdown";
@@ -21,6 +22,7 @@ const ConvolverNode = (props: Props) => {
   const { node } = props;
 
   const [selectedFile, setSelectedFile] = useState(IR_FILES[0]);
+  const [isNormalized, setIsNormalized] = useState(node.audioNode.normalize);
   const inputFileRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -61,34 +63,48 @@ const ConvolverNode = (props: Props) => {
     if (!e.target.files) return;
     const file = e.target.files[0];
 
-    console.log(file);
-
     let reader = new FileReader();
     reader.readAsArrayBuffer(file);
     reader.onload = async (readerEvent: ProgressEvent<FileReader>) => {
-      console.log("in onload");
       if (!readerEvent.target) return;
 
       let arraybuffer = readerEvent.target.result;
       if (!arraybuffer) return;
       if (typeof arraybuffer === "string") {
         // let arraybuffer: ArrayBuffer = readerEvent.target.result;
-        console.log("AHH", arraybuffer);
+        // TODO handle invalid arraybuffer result
       } else {
-        console.log("loading audio data...");
         node.audioNode.buffer = await node.audioNode.context.decodeAudioData(
           arraybuffer
         );
-
-        console.log("node.audioNode.buffer", node.audioNode.buffer);
 
         setSelectedFile(file.name);
       }
     };
   };
 
+  const handleNormalizeToggle = () => {
+    node.audioNode.normalize = !isNormalized;
+    console.log(node.audioNode);
+    setIsNormalized(!isNormalized);
+  };
+
   return (
     <>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          padding: "1rem",
+          gap: "1rem",
+        }}
+      >
+        <div
+          className={`${styles.checkmark} ${isNormalized ? styles.filled : ""}`}
+          onClick={handleNormalizeToggle}
+        ></div>
+        <span>normalize</span>
+      </div>
       <SelectionDropdown title={selectedFile}>
         {IR_FILES.map((f, i) => {
           return (

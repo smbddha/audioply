@@ -20,7 +20,7 @@ const Header = () => {
           justifyContent: "space-between",
         }}
       >
-        <text
+        <span
           style={{
             fontWeight: "500",
             fontSize: "2.8rem",
@@ -29,7 +29,7 @@ const Header = () => {
           }}
         >
           web audio api playground
-        </text>
+        </span>
         <div
           style={{
             flex: "1",

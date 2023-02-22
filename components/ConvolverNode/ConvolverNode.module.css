@@ -1,0 +1,11 @@
+.checkmark {
+    height: 1.2rem;
+    width: 1.2rem;
+    /* background-color: #FA6900; */
+    border: 4px solid black;
+    position: relative;
+}
+
+.filled {
+    background-color: black;
+}

@@ -1,71 +1,12 @@
-import React, {
-  useState,
-  createRef,
-  PropsWithChildren,
-  MouseEvent,
-} from "react";
+import React, { useState, PropsWithChildren, MouseEvent } from "react";
 
-import { INode, AudioNodeType } from "@/types";
+import { AudioNodeType } from "@/types";
 import { useStore } from "@/store";
-
-const nodeOptions: Record<
-  string,
-  {
-    f: (ctx: AudioContext) => AudioNode;
-    d: string;
-    nodeType: AudioNodeType;
-  }
-> = {
-  analyserNode: {
-    f: (ctx) => ctx.createAnalyser(),
-    d: "analyser",
-    nodeType: AudioNodeType.Analyser,
-  },
-  delayNode: {
-    f: (ctx) => ctx.createDelay(),
-    d: "delay",
-    nodeType: AudioNodeType.Delay,
-  },
-  convolverNode: {
-    f: (ctx) => ctx.createConvolver(),
-    d: "convolver",
-    nodeType: AudioNodeType.Convolver,
-  },
-  biquadFilter: {
-    f: (ctx) => ctx.createBiquadFilter(),
-    d: "biquad filter",
-    nodeType: AudioNodeType.Biquad,
-  },
-  gainNode: {
-    f: (ctx) => ctx.createGain(),
-    d: "gain",
-    nodeType: AudioNodeType.Gain,
-  },
-  oscillatorNode: {
-    f: (ctx) => ctx.createOscillator(),
-    d: "oscillator",
-    nodeType: AudioNodeType.Oscillator,
-  },
-  compressorNode: {
-    f: (ctx) => ctx.createDynamicsCompressor(),
-    d: "dynamics compressor",
-    nodeType: AudioNodeType.Compressor,
-  },
-  audioBufferNode: {
-    f: (ctx) => ctx.createBufferSource(),
-    d: "audio buffer source",
-    nodeType: AudioNodeType.AudioBuffer,
-  },
-  audioOut: {
-    f: (ctx) => ctx.destination,
-    d: "audio output",
-    nodeType: AudioNodeType.AudioOut,
-  },
-};
+import { nodeOptions, createNode } from "@/utils";
 
 type Props = {};
 
-const Controls = (props: Props) => {
+const Controls = (_: Props) => {
   const [isShowing, setIsShowing] = useState(false);
 
   const audioCtx = useStore((state) => state.context);
@@ -73,26 +14,27 @@ const Controls = (props: Props) => {
   const reset = useStore((state) => state.reset);
 
   const handleHeadClick = () => {
-    console.log("HERE");
     setIsShowing(!isShowing);
   };
+
   const handleCreateNode = (
     d: string,
     nodeType: AudioNodeType,
     f: (ctx: AudioContext) => AudioNode
   ) => {
     if (!audioCtx) return;
-    const node = f(audioCtx);
+    // const node = f(audioCtx);
 
-    const newNode: INode<AudioNode> = {
-      id: "id" + Math.random().toString(16).slice(2),
-      name: d,
-      audioNode: node,
-      type: nodeType,
-      inputRefs: Array(node.numberOfInputs).fill(createRef<HTMLDivElement>()),
-      outputRefs: Array(node.numberOfOutputs).fill(createRef<HTMLDivElement>()),
-    };
+    // const newNode: INode<AudioNode> = {
+    //   id: "id" + Math.random().toString(16).slice(2),
+    //   name: d,
+    //   audioNode: node,
+    //   type: nodeType,
+    //   inputRefs: Array(node.numberOfInputs).fill(createRef<HTMLDivElement>()),
+    //   outputRefs: Array(node.numberOfOutputs).fill(createRef<HTMLDivElement>()),
+    // };
 
+    const newNode = createNode(audioCtx, { f, d, nodeType });
     addNode(newNode);
   };
 
