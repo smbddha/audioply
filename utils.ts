@@ -72,12 +72,12 @@ export const nodeOptions: Record<
   },
   compressorNode: {
     f: (ctx) => ctx.createDynamicsCompressor(),
-    d: "dynamics compressor",
+    d: "compressor",
     nodeType: AudioNodeType.Compressor,
   },
   audioBufferNode: {
     f: (ctx) => ctx.createBufferSource(),
-    d: "audio buffer source",
+    d: "audio buffer",
     nodeType: AudioNodeType.AudioBuffer,
   },
   audioOut: {

@@ -5,7 +5,6 @@ import {
   MouseEvent,
   RefObject,
   useRef,
-  createRef,
   useMemo,
   useCallback,
 } from "react";
@@ -17,21 +16,18 @@ import MyAudioNode from "@/components/MyAudioNode";
 
 import { useStore } from "@/store";
 
-import { INode, ConnNode, AudioNodeType } from "@/types";
+import { INode, ConnNode } from "@/types";
 import SVGLayer from "@/components/svglayer";
 import Header from "@/components/Header";
-import Controls from "@/components/Controls";
 import Footer from "@/components/Footer";
+import Controls from "@/components/Controls";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  const audioCtx = useStore((state) => state.context);
   const graph = useStore((state) => state.nodes);
-  const addNode = useStore((state) => state.addNode);
   const deleteNode = useStore((state) => state.deleteNode);
   const addConnections = useStore((state) => state.addConnections);
-  const deleteConnection = useStore((state) => state.deleteConnection);
 
   const mouseRef = useRef({ x: 0, y: 0 });
   const [connectionStart, setConnectionStart] = useState<ConnNode | null>(null);
@@ -49,11 +45,8 @@ export default function Home() {
         setConnectionStart([node, "input", inputIndex]);
       } else if (e.type === "mouseenter") {
         setConnectionEnd([node, "input", inputIndex]);
-        // setHoveredOutput([node, outputIndex]);
       } else if (e.type === "mouseleave") {
         setConnectionEnd(null);
-      } else {
-        console.log("Unrecognized type ", e.type);
       }
     },
     []
@@ -71,11 +64,8 @@ export default function Home() {
         setConnectionStart([node, "output", outputIndex]);
       } else if (e.type === "mouseenter") {
         setConnectionEnd([node, "output", outputIndex]);
-        // setHoveredOutput([node, outputIndex]);
       } else if (e.type === "mouseleave") {
         setConnectionEnd(null);
-      } else {
-        console.log("Unrecognized type ", e.type);
       }
     },
     []
@@ -88,8 +78,6 @@ export default function Home() {
 
   const handleMouseUp = (_: MouseEvent) => {
     // either create the connection or stop drawing the patch line
-    console.log(connectionStart, connectionEnd);
-
     if (connectionEnd && connectionStart) {
       // make connection
       makeConnection(connectionStart, connectionEnd);
@@ -99,13 +87,12 @@ export default function Home() {
     setConnectionEnd(null);
   };
 
-  const handleDeleteConnection = (connIdx: number) => {
-    deleteConnection(connIdx);
-  };
-
-  const handleDeleteNode = useCallback((node: INode) => {
-    deleteNode(node);
-  }, []);
+  const handleDeleteNode = useCallback(
+    (node: INode) => {
+      deleteNode(node);
+    },
+    [deleteNode]
+  );
 
   const renderNodes = useMemo(() => {
     return (
@@ -129,26 +116,6 @@ export default function Home() {
     mouseRef.current = { x: e.clientX, y: e.clientY };
   };
 
-  // const handleCreateNode = (
-  //   d: string,
-  //   nodeType: AudioNodeType,
-  //   f: (ctx: AudioContext) => AudioNode
-  // ) => {
-  //   if (!audioCtx) return;
-  //   const node = f(audioCtx);
-
-  //   const newNode: INode = {
-  //     id: "id" + Math.random().toString(16).slice(2),
-  //     name: d,
-  //     audioNode: node,
-  //     type: nodeType,
-  //     inputRefs: Array(node.numberOfInputs).fill(createRef<HTMLDivElement>()),
-  //     outputRefs: Array(node.numberOfOutputs).fill(createRef<HTMLDivElement>()),
-  //   };
-
-  //   addNode(newNode);
-  // };
-
   return (
     <>
       <Head>
@@ -163,11 +130,11 @@ export default function Home() {
         onMouseUp={handleMouseUp}
       >
         <Header />
+        <Controls />
         {renderNodes}
         <SVGLayer
           mouseRef={mouseRef}
           connectionStart={connectionStart && getCoords(connectionStart)}
-          deleteConnection={handleDeleteConnection}
         />
         <Footer />
       </main>

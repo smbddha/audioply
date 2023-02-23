@@ -9,8 +9,8 @@ const Header = () => {
         width: "100%",
         margin: "1rem",
         marginTop: "1rem",
-        marginBottom: "4rem",
-        // borderTop: "4px solid black",
+        marginBottom: "0.2rem",
+        // borderTop: "3px solid black",
       }}
     >
       <div
@@ -23,12 +23,12 @@ const Header = () => {
         <span
           style={{
             fontWeight: "500",
-            fontSize: "2.8rem",
+            fontSize: "1.6 rem",
             maxWidth: "20rem",
             textAlign: "right",
           }}
         >
-          web audio api playground
+          web audio playground
         </span>
         <div
           style={{
@@ -36,7 +36,7 @@ const Header = () => {
             display: "flex",
             flexDirection: "row",
             alignItems: "flex-end",
-            borderTop: "4px solid black",
+            borderTop: "2px solid black",
             marginLeft: "2rem",
             marginTop: "1rem",
           }}
@@ -47,22 +47,29 @@ const Header = () => {
               flexDirection: "row",
               gap: "1rem",
             }}
-          >
-            <Controls />
-          </div>
+          ></div>
           <div
             style={{
               flex: "1",
               display: "flex",
               flexDirection: "row-reverse",
               padding: "1rem",
-              fontSize: "1.4rem",
+              fontSize: "1rem",
               alignItems: "flex-start",
               height: "100%",
             }}
-          >
-            <Link href="/#">about</Link>
-          </div>
+          ></div>
+        </div>
+        <div
+          style={{
+            margin: "1rem",
+            marginTop: "0.5rem",
+            marginBottom: "2rem",
+            marginLeft: "2rem",
+            // borderTop: "3px solid black",
+          }}
+        >
+          <Link href="/#">about</Link>
         </div>
       </div>
     </div>
