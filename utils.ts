@@ -85,6 +85,12 @@ export const nodeOptions: Record<
     d: "audio output",
     nodeType: AudioNodeType.AudioOut,
   },
+  mediaStream: {
+    // f: (ctx) => ctx.createMediaStreamSource(new MediaStream()),
+    f: (ctx) => ctx.createOscillator(),
+    d: "media stream",
+    nodeType: AudioNodeType.MediaStream,
+  },
 };
 
 export const createNode = (

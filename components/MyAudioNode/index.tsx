@@ -9,6 +9,7 @@ import AnalyserNode from "@/components/AnalyserNode";
 import CompressorNode from "@/components/CompressorNode";
 import AudioBufferNode from "@/components/AudioBufferNode";
 import AudioOutNode from "@/components/AudioOutNode";
+import MediaStreamNode from "@/components/MediaStreamNode";
 
 import Node from "@/uicomponents/node";
 import { AudioNodeType, INode } from "@/types";
@@ -53,6 +54,8 @@ const MyAudioNode = (props: Props) => {
         return <AudioBufferNode node={node as INode<AudioBufferSourceNode>} />;
       case AudioNodeType.AudioOut:
         return <AudioOutNode node={node as INode<AudioDestinationNode>} />;
+      case AudioNodeType.MediaStream:
+        return <MediaStreamNode node={node as INode} />;
       default:
         return <></>;
     }
