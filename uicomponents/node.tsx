@@ -70,8 +70,8 @@ const Node = (props: PropsWithChildren<Props>) => {
   return (
     <Draggable
       defaultPosition={{
-        x: window.innerHeight / 2 - 60,
-        y: window.innerWidth / 2 - 60,
+        x: window.innerHeight / 2,
+        y: window.innerWidth / 2,
       }}
       nodeRef={nodeRef}
       handle=".handle"
@@ -80,7 +80,7 @@ const Node = (props: PropsWithChildren<Props>) => {
         ref={nodeRef}
         style={{
           zIndex: "1000",
-          border: "4px solid black",
+          border: "3px solid black",
           display: "flex",
           flexDirection: "column",
           // gap: "6px",
@@ -88,6 +88,8 @@ const Node = (props: PropsWithChildren<Props>) => {
           color: "black",
           minWidth: "16rem",
           position: "absolute",
+
+          fontSize: "0.8rem",
         }}
       >
         <div
@@ -95,7 +97,7 @@ const Node = (props: PropsWithChildren<Props>) => {
           style={{
             display: "flex",
             flexDirection: "row",
-            borderBottom: "4px solid black",
+            borderBottom: "3px solid black",
             justifyContent: "space-between",
             cursor: "pointer",
           }}
@@ -104,16 +106,16 @@ const Node = (props: PropsWithChildren<Props>) => {
             style={{
               paddingLeft: "1px",
               fontWeight: "600",
-              fontSize: "1.2rem",
+              // fontSize: "0.8rem",
             }}
           >
             {node.name}
           </span>
           <div
             style={{
-              padding: "4px",
-              borderLeft: "4px solid black",
-              width: "2rem",
+              padding: "-1px",
+              borderLeft: "3px solid black",
+              width: "1.6rem",
               textAlign: "center",
             }}
           >

@@ -46,31 +46,30 @@ const BiquadFilterNode = (props: Props) => {
     node.audioNode.type = newType;
   };
 
-  console.log("HERE");
   return (
     <>
       <ParamSlider
-        title="Freq"
+        title="freq"
         audioParam={node.audioNode.frequency}
         handleChange={handleFreqChange}
         limits={[0, 20000]}
         unit="hz"
       />
       <ParamSlider
-        title="Detune"
+        title="detune"
         audioParam={node.audioNode.detune}
         handleChange={handleDetuneChange}
         limits={[-1200, 1200]}
         unit="cents"
       />
       <ParamSlider
-        title="Q"
+        title="q"
         audioParam={node.audioNode.Q}
         handleChange={handleQChange}
         limits={[1, 100]}
       />
       <ParamSlider
-        title="Gain"
+        title="gain"
         audioParam={node.audioNode.gain}
         handleChange={handleGainChange}
         limits={[0, 10]}

@@ -71,25 +71,34 @@ const Controls = (_: Props) => {
   };
 
   return (
-    <>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        gap: "0.4rem",
+        fontSize: "0.8rem",
+        zIndex: "10000",
+        marginLeft: "1.6rem",
+      }}
+    >
       <div
         style={{
-          zIndex: "10000",
-          marginLeft: "1rem",
+          // zIndex: "10000",
+          // marginLeft: "1rem",
           textAlign: "center",
           position: "relative",
+          // marginTop: "1rem",
         }}
       >
         <div
           className="mybutton"
           style={{
             border: "3px solid black",
-            padding: "1rem",
+            padding: "0.4rem",
             cursor: "pointer",
-            minWidth: "14rem",
+            minWidth: "8rem",
             marginBottom: "0.4rem",
             fontWeight: "600",
-            fontSize: "1.4rem",
           }}
           onClick={handleHeadClick}
         >
@@ -99,29 +108,29 @@ const Controls = (_: Props) => {
       </div>
       <div
         style={{
-          zIndex: "10000",
-          marginLeft: "1rem",
+          // zIndex: "10000",
+          // marginLeft: "1rem",
           textAlign: "center",
           position: "relative",
+          // marginTop: "1rem",
         }}
       >
         <div
           className="mybutton"
           style={{
             border: "3px solid black",
-            padding: "1rem",
+            padding: "0.4rem",
             cursor: "pointer",
-            minWidth: "14rem",
+            minWidth: "8rem",
             marginBottom: "0.4rem",
             fontWeight: "600",
-            fontSize: "1.4rem",
           }}
           onClick={handleResetClick}
         >
           reset
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
@@ -138,10 +147,12 @@ const ControlButton = (props: PropsWithChildren<ControlButtonProps>) => {
       className="mybutton"
       style={{
         border: "3px solid black",
-        padding: "1rem",
+        padding: "0.4rem",
         paddingTop: "0.4rem",
         paddingBottom: "0.4rem",
         cursor: "pointer",
+        fontSize: "0.7rem",
+        fontWeight: "500",
       }}
       onClick={handleClick}
     >

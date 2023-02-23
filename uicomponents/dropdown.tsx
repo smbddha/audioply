@@ -28,7 +28,7 @@ const Dropdown = ({ title, children }: Props) => {
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
-            borderTop: "4px solid black",
+            borderTop: "3px solid black",
             padding: "0.4rem",
           }}
         >
@@ -52,7 +52,7 @@ const Dropdown = ({ title, children }: Props) => {
                 style={{
                   width: "100%",
                   padding: "0.4rem",
-                  borderTop: "4px solid black",
+                  borderTop: "3px solid black",
                 }}
               >
                 {child}

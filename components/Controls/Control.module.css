@@ -1,0 +1,8 @@
+.control-button {
+    border: "3px solid black";
+    padding: "0.4rem";
+        /* padding-top: "0.4rem", */
+        /* padding-bottom: "0.4rem", */
+    cursor: "pointer";
+    font-size: "1rem"
+}

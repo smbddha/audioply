@@ -8,15 +8,16 @@ type Props = {
   mouseRef: RefObject<Point>;
   // connections: [ConnNode, ConnNode][];
   connectionStart: Point | null;
-  deleteConnection: (idx: number) => void;
+  // deleteConnection: (idx: number) => void;
 };
 
 const SVGLayer = (props: Props) => {
   // const { mouseRef, connections, connectionStart, deleteConnection } = props;
-  const { mouseRef, connectionStart, deleteConnection } = props;
+  const { mouseRef, connectionStart } = props;
   const [_, setMousePos] = useState({ x: 0, y: 0 });
 
   const connections = useStore((state) => state.connections);
+  const deleteConnection = useStore((state) => state.deleteConnection);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -42,7 +43,7 @@ const SVGLayer = (props: Props) => {
     };
   };
 
-  const handleConnectionClick = (e: React.MouseEvent, connIdx: number) => {
+  const handleConnectionClick = (_: React.MouseEvent, connIdx: number) => {
     deleteConnection(connIdx);
   };
 

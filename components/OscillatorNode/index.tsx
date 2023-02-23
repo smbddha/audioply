@@ -69,14 +69,14 @@ const OscillatorNode = (props: Props) => {
   return (
     <>
       <ParamSlider
-        title="Freq"
+        title="freq"
         audioParam={node.audioNode.frequency}
         handleChange={handleFreqChange}
         limits={[0, 20000]}
         unit="hz"
       />
       <ParamSlider
-        title="Detune"
+        title="detune"
         audioParam={node.audioNode.detune}
         handleChange={handleDetuneChange}
         limits={[-1200, 1200]}

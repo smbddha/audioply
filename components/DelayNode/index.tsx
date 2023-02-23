@@ -17,9 +17,10 @@ const DelayNode = (props: Props) => {
   return (
     <>
       <ParamSlider
-        title="Delay Time"
+        title="time"
         audioParam={node.audioNode.delayTime}
         handleChange={handleDelayTimeChange}
+        unit={"s"}
       />
     </>
   );

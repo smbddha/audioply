@@ -9,5 +9,6 @@
     text-align: center;
     justify-content: center;
     padding: 1rem;
-
+    font-size: 0.8rem;
+    font-weight: 500;
 }

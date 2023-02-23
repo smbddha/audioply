@@ -10,7 +10,7 @@ const Button = (props: PropsWithChildren<Props>) => {
     <div
       onClick={handleClick}
       style={{
-        border: "4px solid black",
+        border: "3px solid black",
         textAlign: "center",
         width: "100%",
         cursor: "pointer",
