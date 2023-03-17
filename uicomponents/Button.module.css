@@ -1,0 +1,6 @@
+.mybutton {
+    border: 3px solid black;
+    text-align: center;
+    width: 100%;
+    cursor: pointer;
+}

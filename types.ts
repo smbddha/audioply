@@ -20,6 +20,7 @@ export enum AudioNodeType {
   AudioBuffer = "AUDIO_BUFFER",
   AudioOut = "AUDIO_OUT",
   MediaStream = "MEDIA_STREAM",
+  WaveShaper = "WAVE_SHAPER",
 }
 
 export type ConnNode = [INode, OutputOrInput, number];

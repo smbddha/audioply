@@ -1,5 +1,7 @@
 import React, { useState, ChangeEvent, useCallback } from "react";
 
+import styles from "./Paramslider.module.css";
+
 const useSlider = (
   min: number,
   max: number,
@@ -90,6 +92,7 @@ const ParamSlider = (props: Props) => {
       style={{
         margin: "0.2rem",
         marginBottom: "0.4rem",
+        fontSize: "0.8rem",
       }}
     >
       <div
@@ -97,23 +100,29 @@ const ParamSlider = (props: Props) => {
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
-          marginBottom: "0.2rem",
+          marginBottom: "0.1rem",
         }}
       >
         <span>{title}</span>
         <div>
           <input
+            className={styles.numinput}
             type="text"
             inputMode="numeric"
             value={textValue}
             onChange={handleInput}
-            style={{
-              maxWidth: "3rem",
-              background: "none",
-              textDecoration: "none",
-              color: "black",
-              border: "0px solid transparent",
-            }}
+            style={
+              {
+                // maxWidth: "3rem",
+                // background: "none",
+                // textDecoration: "none",
+                // color: "black",
+                // border: "0px solid transparent",
+                // fontSize: "0.8rem",
+                // textAlign: "right",
+                // marginRight: "0.1rem",
+              }
+            }
           />
           <span>{unit ?? unit}</span>
         </div>

@@ -1,0 +1,10 @@
+.numinput {
+    max-width: 3rem;
+    text-decoration: none;
+    background: none;
+    color: black;
+    border: 0px solid transparent;
+    font-size: 0.8rem;
+    text-align: right;
+    margin-right: 0.1rem;
+}

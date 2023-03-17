@@ -2,12 +2,14 @@ import { create } from "zustand";
 // import produce from "immer";
 // import { immer } from "zustand/middleware/immer";
 import { ConnNode, INode } from "./types";
-import { nodeOptions, createNode } from "@/utils";
+// import { nodeOptions, createNode } from "@/utils";
 
 interface IStore {
   context: AudioContext | null;
   nodes: INode[];
+  showNodesPanel: boolean;
   connections: [ConnNode, ConnNode][];
+  toggleNodesPanel: () => void;
   addNode: (a: INode) => void;
   reset: () => void;
   deleteNode: (a: INode) => void;
@@ -73,6 +75,13 @@ export const useStore = create<IStore>((set, get) => ({
   context: typeof window !== "undefined" ? new AudioContext() : null,
   nodes: [],
   connections: [],
+  showNodesPanel: false,
+  toggleNodesPanel: () => {
+    set((state) => ({
+      ...state,
+      showNodesPanel: !state.showNodesPanel,
+    }));
+  },
   addNode: (payload: INode) => {
     set((state) => ({
       ...state,

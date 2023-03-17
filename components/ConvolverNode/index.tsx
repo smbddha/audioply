@@ -95,8 +95,8 @@ const ConvolverNode = (props: Props) => {
         style={{
           display: "flex",
           flexDirection: "row",
-          padding: "1rem",
-          gap: "1rem",
+          padding: "0.4rem",
+          gap: "0.4rem",
         }}
       >
         <div

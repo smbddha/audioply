@@ -1,0 +1,46 @@
+.container {
+    width: 100%;
+    border: 4px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    z-index: 200000;
+    background-color: #fff;
+}
+
+.topButton {
+    border-right: 4px solid black;
+    padding: 0.2rem;
+    width: 8rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;   
+}
+
+.createButton {
+    cursor: pointer;
+    border-left: 4px solid black;
+}
+
+.createButton:hover {
+    border-bottom: 4px solid #8ad470;
+}
+
+.createButton:active {
+    border-bottom: 0px solid transparent;
+}
+
+.resetButton {
+    cursor: pointer;
+    /* border-left: 4px solid black; */
+}
+
+.resetButton:hover {
+    border-bottom: 4px solid #ea6c6c;
+}
+
+.resetButton:active {
+    border-bottom: 0px solid transparent;
+}

@@ -8,6 +8,7 @@ import React, {
 import Draggable from "react-draggable";
 
 import { INode } from "@/types";
+import styles from "./Node.module.css";
 
 type InputOutputProps = {
   mouseHandler: (e: MouseEvent) => void;
@@ -21,21 +22,37 @@ const InputOutputNode = forwardRef<HTMLDivElement, InputOutputProps>(
 
     return (
       <div
-        ref={ref}
         style={{
-          transform: `translate(${isOutput ? "0.2rem" : "-0.2rem"}, 0rem)`,
+          display: "flex",
+          flexDirection: "row",
         }}
-        onMouseDown={(e) => mouseHandler(e)}
-        onMouseEnter={(e) => mouseHandler(e)}
-        onMouseLeave={(e) => mouseHandler(e)}
       >
-        <svg style={{ cursor: "pointer" }} width={19} height={19}>
+        {isOutput ? <span>out</span> : null}
+        <div
+          className={`${styles.inputoutput} ${
+            isOutput ? styles.output : styles.input
+          }`}
+          ref={ref}
+          style={
+            {
+              // transform: `translate(${isOutput ? "0.2rem" : "-0.2rem"}, 0rem)`,
+            }
+          }
+          onMouseDown={(e) => mouseHandler(e)}
+          onMouseEnter={(e) => mouseHandler(e)}
+          onMouseLeave={(e) => mouseHandler(e)}
+        >
+          {/*
+<svg style={{ cursor: "pointer" }} width={19} height={19}>
           {isOutput ? (
             <polygon points="18,0 0,9 18,18" fill="black" />
           ) : (
             <polygon points="0,0 18,9 0,18" fill="black" />
           )}
         </svg>
+	  */}
+        </div>
+        {isOutput ? null : <span>in</span>}
       </div>
     );
   }
@@ -68,26 +85,22 @@ const Node = (props: PropsWithChildren<Props>) => {
   };
 
   return (
-    <Draggable
-      defaultPosition={{
-        x: window.innerHeight / 2 - 60,
-        y: window.innerWidth / 2 - 60,
-      }}
-      nodeRef={nodeRef}
-      handle=".handle"
-    >
+    <Draggable nodeRef={nodeRef} handle=".handle">
       <div
         ref={nodeRef}
         style={{
           zIndex: "1000",
-          border: "4px solid black",
+          border: "3px solid black",
           display: "flex",
           flexDirection: "column",
           // gap: "6px",
           backgroundColor: "white",
           color: "black",
-          minWidth: "16rem",
+          minWidth: "14rem",
           position: "absolute",
+          fontSize: "0.8rem",
+          top: "45%",
+          left: "45%",
         }}
       >
         <div
@@ -95,27 +108,29 @@ const Node = (props: PropsWithChildren<Props>) => {
           style={{
             display: "flex",
             flexDirection: "row",
-            borderBottom: "4px solid black",
+            borderBottom: "3px solid black",
             justifyContent: "space-between",
             cursor: "pointer",
           }}
         >
           <span
             style={{
-              paddingLeft: "1px",
+              paddingLeft: "0.3rem",
+              paddingTop: "0.1rem",
               fontWeight: "600",
-              fontSize: "1.2rem",
+              fontSize: "0.8rem",
             }}
           >
             {node.name}
           </span>
           <div
             style={{
-              padding: "4px",
-              borderLeft: "4px solid black",
+              padding: "2px",
+              borderLeft: "3px solid black",
               width: "2rem",
               textAlign: "center",
             }}
+            onClick={handleDelete}
           >
             <button
               style={{
@@ -126,7 +141,6 @@ const Node = (props: PropsWithChildren<Props>) => {
                 fontWeight: "bold",
                 cursor: "pointer",
               }}
-              onClick={handleDelete}
             >
               X
             </button>
@@ -137,7 +151,7 @@ const Node = (props: PropsWithChildren<Props>) => {
             display: "flex",
             flex: 1,
             flexDirection: "row",
-            gap: "8px",
+            gap: "4px",
             paddingTop: "8px",
             paddingBottom: "8px",
             justifyContent: "space-between",

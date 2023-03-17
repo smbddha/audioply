@@ -1,0 +1,45 @@
+.modalwrapper {
+    z-index: 10000000;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    min-width: 60%;
+    min-height: 60%;
+}
+
+.mygrid {
+    background-color: #fff;
+    padding: 1rem;
+    border: 5px solid black;
+	     
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+
+    font-size: 1rem; 
+    font-weight: 500;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    min-width: 8rem;
+    min-height: 4rem;
+}
+
+.item:hover {
+    background-color: #8ad470 ;
+}

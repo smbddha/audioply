@@ -27,7 +27,7 @@ export const getCoords = (connNode: ConnNode): Point | null => {
   if (!p) return null;
 
   return {
-    x: p.x + (outputOrInput === "input" ? 4 : CONNECTION_X_OFFSET),
+    x: p.x + 8,
     y: p.y + CONNECTION_Y_OFFSET,
   };
 };
@@ -90,6 +90,12 @@ export const nodeOptions: Record<
     f: (ctx) => ctx.createOscillator(),
     d: "media stream",
     nodeType: AudioNodeType.MediaStream,
+  },
+  waveShaper: {
+    // f: (ctx) => ctx.createMediaStreamSource(new MediaStream()),
+    f: (ctx) => ctx.createWaveShaper(),
+    d: "wave shaper",
+    nodeType: AudioNodeType.WaveShaper,
   },
 };
 

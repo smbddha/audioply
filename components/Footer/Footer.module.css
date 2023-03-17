@@ -1,5 +1,6 @@
 .footercontainer {
     position: absolute;
+    left: 0;
     bottom: 0;
     width: 100%;
     display: flex;
@@ -9,5 +10,7 @@
     text-align: center;
     justify-content: center;
     padding: 1rem;
-
+    font-size: 0.8rem;
+    z-index: 200000;
 }
+

@@ -28,8 +28,8 @@ const Dropdown = ({ title, children }: Props) => {
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
-            borderTop: "4px solid black",
-            padding: "0.4rem",
+            borderTop: "3px solid black",
+            padding: "0.2rem",
           }}
         >
           <span>{title}</span>
