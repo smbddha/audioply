@@ -156,8 +156,12 @@ export default function Home() {
     <>
       <Head>
         <title>Web Audio Playground</title>
-        <meta name="description" content="" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="description"
+          content="A visual audio editor for exploring the Web Audio API's audio nodes."
+        />
+        <meta property="og:title" content="Web Audio Playground" key="title" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main
