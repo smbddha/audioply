@@ -6,28 +6,29 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint ."
   },
   "dependencies": {
-    "@next/font": "13.1.6",
-    "@svg-drawing/react": "^5.0.1-beta.0",
-    "@types/node": "18.11.18",
-    "@types/react": "18.0.27",
-    "@types/react-dom": "18.0.10",
-    "@vercel/analytics": "^1.1.1",
+    "@vercel/analytics": "^2.0.1",
     "bezier-js": "^6.1.3",
-    "eslint": "8.33.0",
-    "eslint-config-next": "13.1.6",
-    "immer": "^9.0.19",
-    "next": "13.1.6",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-draggable": "^4.4.5",
-    "typescript": "4.9.5",
-    "use-immer": "^0.8.1",
-    "zustand": "^4.3.3"
+    "immer": "^11.1.15",
+    "next": "^16.2.11",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-draggable": "^4.7.0",
+    "use-immer": "^0.11.0",
+    "zustand": "^4.5.7"
   },
   "devDependencies": {
-    "@types/bezier-js": "^4.1.0"
+    "@types/bezier-js": "^4.1.0",
+    "@types/node": "^22.20.1",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.2.11",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }
