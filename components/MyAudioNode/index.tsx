@@ -58,8 +58,7 @@ const MyAudioNode = (props: Props) => {
       case AudioNodeType.WaveShaper:
         return <WaveshaperNode node={node as INode<WaveShaperNode>} />;
       case AudioNodeType.MediaStream:
-        //@ts-ignore
-        return <MediaStreamNode node={node as INode} />;
+        return <MediaStreamNode node={node as INode<AudioNode>} />;
       default:
         return <></>;
     }
