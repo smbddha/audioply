@@ -119,7 +119,13 @@ export const createNode = (
     name: d,
     audioNode: node,
     type: nodeType,
-    inputRefs: Array(node.numberOfInputs).fill(createRef<HTMLDivElement>()),
-    outputRefs: Array(node.numberOfOutputs).fill(createRef<HTMLDivElement>()),
+    // One distinct ref per port; Array(n).fill(createRef()) would share a
+    // single ref across every port, colliding on multi-port nodes.
+    inputRefs: Array.from({ length: node.numberOfInputs }, () =>
+      createRef<HTMLDivElement>()
+    ),
+    outputRefs: Array.from({ length: node.numberOfOutputs }, () =>
+      createRef<HTMLDivElement>()
+    ),
   } as INode;
 };
