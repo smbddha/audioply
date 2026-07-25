@@ -15,7 +15,7 @@ A web audio api playground.
 - [x] delay
 - [x] media stream
 - [x] waveshaper
-- [ ] panner
+- [x] panner
 - [ ] custom
 - [ ] share
 - [ ] codegen
