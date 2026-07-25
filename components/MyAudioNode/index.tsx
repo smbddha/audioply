@@ -11,6 +11,7 @@ import AudioBufferNode from "@/components/AudioBufferNode";
 import AudioOutNode from "@/components/AudioOutNode";
 import MediaStreamNode from "@/components/MediaStreamNode";
 import WaveshaperNode from "@/components/WaveshaperNode";
+import PannerNode from "@/components/PannerNode";
 
 import Node from "@/uicomponents/node";
 import { AudioNodeType, INode } from "@/types";
@@ -57,6 +58,8 @@ const MyAudioNode = (props: Props) => {
         return <AudioOutNode node={node as INode<AudioDestinationNode>} />;
       case AudioNodeType.WaveShaper:
         return <WaveshaperNode node={node as INode<WaveShaperNode>} />;
+      case AudioNodeType.Panner:
+        return <PannerNode node={node as INode<PannerNode>} />;
       case AudioNodeType.MediaStream:
         //@ts-ignore
         return <MediaStreamNode node={node as INode} />;

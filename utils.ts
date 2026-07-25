@@ -97,6 +97,11 @@ export const nodeOptions: Record<
     d: "wave shaper",
     nodeType: AudioNodeType.WaveShaper,
   },
+  panner: {
+    f: (ctx) => ctx.createPanner(),
+    d: "panner",
+    nodeType: AudioNodeType.Panner,
+  },
 };
 
 export const createNode = (
