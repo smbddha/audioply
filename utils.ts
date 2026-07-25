@@ -86,8 +86,9 @@ export const nodeOptions: Record<
     nodeType: AudioNodeType.AudioOut,
   },
   mediaStream: {
-    // f: (ctx) => ctx.createMediaStreamSource(new MediaStream()),
-    f: (ctx) => ctx.createOscillator(),
+    // Silent placeholder (0-in/1-out, like the real source); MediaStreamNode
+    // swaps in the real MediaStreamAudioSourceNode once the mic stream resolves.
+    f: (ctx) => ctx.createBufferSource(),
     d: "media stream",
     nodeType: AudioNodeType.MediaStream,
   },
