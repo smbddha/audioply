@@ -13,9 +13,9 @@ A web audio api playground.
 - [x] dynamics compressor
 - [x] gain
 - [x] delay
-- [ ] media stream
+- [x] media stream
 - [x] waveshaper
-- [ ] panner
+- [x] panner
 - [ ] custom
 - [ ] share
 - [ ] codegen
