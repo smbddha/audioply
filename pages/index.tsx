@@ -18,6 +18,7 @@ import MyAudioNode from "@/components/MyAudioNode";
 import { useStore } from "@/store";
 
 import { INode, ConnNode, AudioNodeType } from "@/types";
+import { readGraphFromHash, buildGraph } from "@/share";
 import SVGLayer from "@/components/svglayer";
 import Header from "@/components/Header";
 // import Controls from "@/components/Controls";
@@ -36,6 +37,8 @@ export default function Home() {
   const showNodesPanel = useStore((state) => state.showNodesPanel);
   const toggleNodesPanel = useStore((state) => state.toggleNodesPanel);
   const reset = useStore((state) => state.reset);
+  const importGraph = useStore((state) => state.importGraph);
+  const context = useStore((state) => state.context);
 
   const mouseRef = useRef({ x: 0, y: 0 });
   const [connectionStart, setConnectionStart] = useState<ConnNode | null>(null);
@@ -54,6 +57,16 @@ export default function Home() {
     return () => {
       window.removeEventListener("keyup", handleKeyPress);
     };
+  }, []);
+
+  // Rebuild a shared graph from the URL hash on first load.
+  useEffect(() => {
+    const g = readGraphFromHash();
+    if (g && context) {
+      const { nodes, connections } = buildGraph(context, g);
+      importGraph(nodes, connections);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const inputMouseHandler = useCallback(

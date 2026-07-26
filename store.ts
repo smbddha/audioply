@@ -11,6 +11,7 @@ interface IStore {
   connections: [ConnNode, ConnNode][];
   toggleNodesPanel: () => void;
   addNode: (a: INode) => void;
+  importGraph: (a: INode[], b: [ConnNode, ConnNode][]) => void;
   reset: () => void;
   deleteNode: (a: INode) => void;
   // updateNode: (a: Partial<INode>) => void;
@@ -87,6 +88,14 @@ export const useStore = create<IStore>((set, get) => ({
       ...state,
       nodes: [...state.nodes, payload],
     }));
+  },
+  importGraph: (
+    nodes: INode[],
+    connections: [ConnNode, ConnNode][]
+  ) => {
+    get().reset();
+    set((state) => ({ ...state, nodes }));
+    if (connections.length) get().addConnections(...connections);
   },
   reset: () => {
     get().filterConnections(() => false);

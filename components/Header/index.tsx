@@ -1,14 +1,19 @@
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import Controls from "../Controls";
 
 import styles from "./Header.module.css";
 
 import { useStore } from "@/store";
+import { serializeGraph, buildShareUrl } from "@/share";
 
 const Header = () => {
   const showNodePanel = useStore((state) => state.toggleNodesPanel);
   const reset = useStore((state) => state.reset);
+  const nodes = useStore((state) => state.nodes);
+  const connections = useStore((state) => state.connections);
+
+  const [copied, setCopied] = useState(false);
 
   const handleResetClick = () => {
     reset();
@@ -17,6 +22,18 @@ const Header = () => {
   const handleCreateClick = () => {
     console.log("CLICKKKKK");
     showNodePanel();
+  };
+
+  const handleShareClick = async () => {
+    const url = buildShareUrl(serializeGraph(nodes, connections));
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      // Clipboard blocked (e.g. insecure context) — fall back to a prompt.
+      window.prompt("Copy this share link:", url);
+    }
   };
   return (
     <div
@@ -109,6 +126,12 @@ const Header = () => {
             }
           >
             reset (r)
+          </div>
+          <div
+            className={`${styles.resetButton} ${styles.topButton}`}
+            onClick={handleShareClick}
+          >
+            {copied ? "copied!" : "share"}
           </div>
           {/*<Controls />*/}
         </div>

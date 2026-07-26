@@ -7,6 +7,7 @@ export type INode<T = AudioNode> = {
   audioNode: T;
   inputRefs: RefObject<HTMLDivElement>[];
   outputRefs: RefObject<HTMLDivElement>[];
+  position?: Point;
 };
 
 export enum AudioNodeType {
