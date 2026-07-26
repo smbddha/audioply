@@ -5,7 +5,7 @@ import React, {
   useRef,
   forwardRef,
 } from "react";
-import Draggable from "react-draggable";
+import Draggable, { DraggableData } from "react-draggable";
 
 import { INode } from "@/types";
 import styles from "./Node.module.css";
@@ -84,8 +84,19 @@ const Node = (props: PropsWithChildren<Props>) => {
     deleteNode(node);
   };
 
+  // Persist the dragged position on the node so it can be serialized for Share.
+  const handleDragStop = (_: unknown, data: DraggableData) => {
+    // eslint-disable-next-line react-hooks/immutability
+    node.position = { x: data.x, y: data.y };
+  };
+
   return (
-    <Draggable nodeRef={nodeRef} handle=".handle">
+    <Draggable
+      nodeRef={nodeRef}
+      handle=".handle"
+      defaultPosition={node.position}
+      onStop={handleDragStop}
+    >
       <div
         ref={nodeRef}
         style={{

@@ -17,7 +17,7 @@ A web audio api playground.
 - [x] waveshaper
 - [x] panner
 - [ ] custom
-- [ ] share
+- [x] share
 - [ ] codegen
 
 ## Getting Started
